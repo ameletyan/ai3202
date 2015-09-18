@@ -6,11 +6,11 @@
 # that graph.
 
 # Function that reads in a text file and converts it into a graph
-def generate(self, File):
+def generate(File):
 	worldFile = open(File, 'r')
 	worldMatrix = []
 	for line in worldFile:
-		worldMatrix.append(line)
+		worldMatrix.append(line.rstrip('\n').split())
 	
 	return worldMatrix
 	

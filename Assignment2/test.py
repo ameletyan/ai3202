@@ -31,3 +31,5 @@ print b.getParent().getDistance()
 print b.getParent().getH()
 print b.getParent().getF()
 print b.getParent().getParent()
+
+world = generate('World1.txt')

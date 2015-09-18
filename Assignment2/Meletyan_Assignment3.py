@@ -5,6 +5,17 @@
 # search to find the fastest route between one node and another on
 # that graph.
 
+# Function that reads in a text file and converts it into a graph
+def generate(self, File):
+	worldFile = open(File, 'r')
+	worldMatrix = []
+	for line in worldFile:
+		worldMatrix.append(line)
+	
+	return worldMatrix
+	
+
+# Node class that represent a square in a given world
 class Node:
 	def __init__(self, x = 0, y = 0, d = 0, h = 0, F = 0, p = None):
 		self.location = [x, y]
@@ -44,4 +55,5 @@ class Node:
 	
 	def setParent(self, p):
 		self.parent = p
+
 

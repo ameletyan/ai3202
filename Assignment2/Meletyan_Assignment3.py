@@ -68,7 +68,7 @@ class Node:
 	def setF(self, F):
 		self.f = F
 	
-	def gsetTV(self, t):
+	def setTV(self, t):
 		if t in range(0, 3):
 			self.topVal = t
 	

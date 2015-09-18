@@ -32,5 +32,8 @@ print(b.getParent().getH())
 print(b.getParent().getF())
 print(b.getParent().getParent())
 
-world = generate('World1.txt')
-print(world)
+worldMatrix = generate('World1.txt')
+print(worldMatrix)
+
+world = Graph(worldMatrix)
+print(world.getCoord(7,0).getH())

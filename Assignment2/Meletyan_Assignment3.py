@@ -115,29 +115,64 @@ def aStar1(graph, startNode, endNode):
 	# Set cursor
 	c = start.getLocation();
 	
-	# Add adjacent nodes to travAble
+	# Add adjacent nodes to travAble and set their cost variables
 	if((c[1]+1 < numCol)and(graph.getCoord(c[0],c[1]+1) not in travAble)and(graph.getCoord(c[0],c[1]+1).getTV != 2)):
 		travAble.append(graph.getCoord(c[0],c[1]+1))
+		graph.getCoord(c[0],c[1]+1).setParent(graph.getCoord(c[0],c[1]))
+		graph.getCoord(c[0],c[1]+1).setDistance(10+graph.getCoord(c[0],c[1]).getDistance())
+		graph.getCoord(c[0],c[1]+1).setH(10*(c[0]+(numRow-c[1])))
+		graph.getCoord(c[0],c[1]+1).setF(graph.getCoord(c[0],c[1]+1).getDistance() + graph.getCoord(c[0],c[1]+1).getH())
 		
 	if((c[0]-1 > 0)and(c[1]+1 < numCol)and(graph.getCoord(c[0]-1,c[1]+1) not in travAble)and(graph.getCoord(c[0]-1,c[1]+1).getTV() != 2)):
 		travAble.append(graph.getCoord(c[0]-1,c[1]+1))
+		graph.getCoord(c[0]-1,c[1]+1).setParent(graph.getCoord(c[0],c[1]))
+		graph.getCoord(c[0]-1,c[1]+1).setDistance(14+graph.getCoord(c[0],c[1]).getDistance())
+		graph.getCoord(c[0]-1,c[1]+1).setH(10*((c[0]-1)+(numRow-c[1])))
+		graph.getCoord(c[0]-1,c[1]+1).setF(graph.getCoord(c[0]-1,c[1]+1).getDistance() + graph.getCoord(c[0]-1,c[1]+1).getH())
 		
 	if((c[0]-1 > 0)and(graph.getCoord(c[0]-1,c[1]) not in travAble)and(graph.getCoord(c[0]-1,c[1]).getTV != 2)):
-		travAble.append(graph.getCoord(c[0]-1,c[1])
+		travAble.append(graph.getCoord(c[0]-1,c[1]))
+		graph.getCoord(c[0]-1,c[1]).setParent(graph.getCoord(c[0],c[1]))
+		graph.getCoord(c[0]-1,c[1]).setDistance(10+graph.getCoord(c[0],c[1]).getDistance())
+		graph.getCoord(c[0]-1,c[1]).setH(10*((c[0]-1)+(numRow-c[1]-1)))
+		graph.getCoord(c[0]-1,c[1]).setF(graph.getCoord(c[0]-1,c[1]).getDistance() + graph.getCoord(c[0]-1,c[1]).getH())
 	
 	if((c[0]-1 > 0)and(c[1]-1 > 0)and(graph.getCoord(c[0]-1,c[1]-1) not in travAble)and(graph.getCoord(c[0]-1,c[1]-1).getTV() != 2)):
 		travAble.append(graph.getCoord(c[0]-1,c[1]-1))
+		graph.getCoord(c[0]-1,c[1]-1).setParent(graph.getCoord(c[0],c[1]))
+		graph.getCoord(c[0]-1,c[1]-1).setDistance(14+graph.getCoord(c[0],c[1]).getDistance())
+		graph.getCoord(c[0]-1,c[1]-1).setH(10*((c[0]-1)+(numRow-c[1]-2)))
+		graph.getCoord(c[0]-1,c[1]-1).setF(graph.getCoord(c[0]-1,c[1]-1).getDistance() + graph.getCoord(c[0]-1,c[1]-1).getH())
 	
 	if((c[1]-1 > 0)and(graph.getCoord(c[0],c[1]-1) not in travAble)and(graph.getCoord(c[0],c[1]-1).getTV() != 2)):
 		travAble.append(graph.getCoord(c[0],c[1]-1))
+		graph.getCoord(c[0],c[1]-1).setParent(graph.getCoord(c[0],c[1]))
+		graph.getCoord(c[0],c[1]-1).setDistance(10+graph.getCoord(c[0],c[1]).getDistance())
+		graph.getCoord(c[0],c[1]-1).setH(10*(c[0]+(numRow-c[1]-2)))
+		graph.getCoord(c[0],c[1]-1).setF(graph.getCoord(c[0],c[1]-1).getDistance() + graph.getCoord(c[0],c[1]-1).getH())
 	
 	if((c[0]+1 < numRow)and(c[1]-1 > 0)and(graph.getCoord(c[0]+1,c[1]-1) not in travAble)and(graph.getCoord(c[0]+1,c[1]-1).getTV() != 2)):
 		travAble.append(graph.getCoord(c[0]+1,c[1]-1))
+		graph.getCoord(c[0]+1,c[1]-1).setParent(graph.getCoord(c[0],c[1]))
+		graph.getCoord(c[0]+1,c[1]-1).setDistance(14+graph.getCoord(c[0],c[1]).getDistance())
+		graph.getCoord(c[0]+1,c[1]-1).setH(10*((c[0]+1)+(numRow-c[1]-2)))
+		graph.getCoord(c[0]+1,c[1]-1).setF(graph.getCoord(c[0]+1,c[1]-1).getDistance() + graph.getCoord(c[0]+1,c[1]-1).getH())
 	
 	if((c[0]+1 < numRow)and(graph.getCoord(c[0]+1,c[1]) not in travAble)and(graph.getCoord(c[0]+1,c[1]).getTV() != 2)):
 		travAble.append(graph.getCoord(c[0]+1,c[1]))
+		graph.getCoord(c[0]+1,c[1]).setParent(graph.getCoord(c[0],c[1]))
+		graph.getCoord(c[0]+1,c[1]).setDistance(10+graph.getCoord(c[0],c[1]).getDistance())
+		graph.getCoord(c[0]+1,c[1]).setH(10*((c[0]+1)+(numRow-c[1]-1)))
+		graph.getCoord(c[0]+1,c[1]).setF(graph.getCoord(c[0]+1,c[1]).getDistance() + graph.getCoord(c[0]+1,c[1]).getH())
 	
 	if((c[0]+1 < numRow)and(c[1]+1 < numCol)and(graph.getCoord(c[0]+1,c[1]+1) not in travAble)and(graph.getCoord(c[0]+1,c[1]+1).getTV() != 2)):
 		travAble.append(graph.getCoord(c[0]+1,c[1]+1))
+		graph.getCoord(c[0]+1,c[1]+1).setParent(graph.getCoord(c[0],c[1]))
+		graph.getCoord(c[0]+1,c[1]+1).setDistance(14+graph.getCoord(c[0],c[1]).getDistance())
+		graph.getCoord(c[0]+1,c[1]+1).setH(10*((c[0]+1)+(numRow-c[1])))
+		graph.getCoord(c[0]+1,c[1]+1).setF(graph.getCoord(c[0]+1,c[1]+1).getDistance() + graph.getCoord(c[0]+1,c[1]+1).getH())
 	
-	return travAble
+	nonTravAble.append(start)
+	travAble.remove(start)
+	
+	return travAble	# for testing

@@ -1,5 +1,5 @@
 # Artur Meletyan
-# 9/15/15
+# 9/18/15
 # CSCI 3202 Assignment 3
 #
 # This program reads in a text file to create a graph then uses A*
@@ -97,25 +97,47 @@ class Graph:
 	def getNumCol(self):
 		return self.numCol
 
-
-def aStar1(graph):
+# First A* search algorithm
+def aStar1(graph, startNode, endNode):
 		
-		# Obtain dimensions of the graph
-		numRow = graph.getNumRow()
-		numCol = graph.getNumCol()
+	# Obtain dimensions of the graph
+	numRow = graph.getNumRow()
+	numCol = graph.getNumCol()
+	
+	# Set start and end nodes
+	start = startNode
+	end = endNode
+	
+	# Initialize traversable and nontraversable nodes list
+	travAble = [start]
+	nonTravAble = []
+	
+	# Set cursor
+	c = start.getLocation();
+	
+	# Add adjacent nodes to travAble
+	if((c[1]+1 < numCol)and(graph.getCoord(c[0],c[1]+1) not in travAble)and(graph.getCoord(c[0],c[1]+1).getTV != 2)):
+		travAble.append(graph.getCoord(c[0],c[1]+1))
 		
-		# Set start and end nodes
-		start = graph.getCoord(numRow-1, 0)
-		end = graph.getCoord(0, numCol-1)
+	if((c[0]-1 > 0)and(c[1]+1 < numCol)and(graph.getCoord(c[0]-1,c[1]+1) not in travAble)and(graph.getCoord(c[0]-1,c[1]+1).getTV() != 2)):
+		travAble.append(graph.getCoord(c[0]-1,c[1]+1))
 		
-		# Initialize traversable and nontraversable nodes
-		travAble = []
-		nonTravAble = []
-		
-		# Set cursor
-		c = start.getLocation();
-		
-		# Add current node to traversable nodes list
-		travAble.append(graph.getCoord(c[0],c[1]))
-		
-		return travAble[0].getH()
+	if((c[0]-1 > 0)and(graph.getCoord(c[0]-1,c[1]) not in travAble)and(graph.getCoord(c[0]-1,c[1]).getTV != 2)):
+		travAble.append(graph.getCoord(c[0]-1,c[1])
+	
+	if((c[0]-1 > 0)and(c[1]-1 > 0)and(graph.getCoord(c[0]-1,c[1]-1) not in travAble)and(graph.getCoord(c[0]-1,c[1]-1).getTV() != 2)):
+		travAble.append(graph.getCoord(c[0]-1,c[1]-1))
+	
+	if((c[1]-1 > 0)and(graph.getCoord(c[0],c[1]-1) not in travAble)and(graph.getCoord(c[0],c[1]-1).getTV() != 2)):
+		travAble.append(graph.getCoord(c[0],c[1]-1))
+	
+	if((c[0]+1 < numRow)and(c[1]-1 > 0)and(graph.getCoord(c[0]+1,c[1]-1) not in travAble)and(graph.getCoord(c[0]+1,c[1]-1).getTV() != 2)):
+		travAble.append(graph.getCoord(c[0]+1,c[1]-1))
+	
+	if((c[0]+1 < numRow)and(graph.getCoord(c[0]+1,c[1]) not in travAble)and(graph.getCoord(c[0]+1,c[1]).getTV() != 2)):
+		travAble.append(graph.getCoord(c[0]+1,c[1]))
+	
+	if((c[0]+1 < numRow)and(c[1]+1 < numCol)and(graph.getCoord(c[0]+1,c[1]+1) not in travAble)and(graph.getCoord(c[0]+1,c[1]+1).getTV() != 2)):
+		travAble.append(graph.getCoord(c[0]+1,c[1]+1))
+	
+	return travAble

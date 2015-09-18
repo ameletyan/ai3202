@@ -38,4 +38,6 @@ print(worldMatrix)
 world = Graph(worldMatrix)
 print(world.getCoord(7,0).getH())
 
-print aStar1(world)
+worldStart = world.getCoord(7, 0)
+worldEnd = world.getCoord(0, 9)
+print aStar1(world, worldStart, worldEnd)

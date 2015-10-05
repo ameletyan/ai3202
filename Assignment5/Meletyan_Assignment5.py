@@ -7,7 +7,6 @@
 # that graph.
 
 # Function that reads in a text file and converts it into a 2D list
-
 def generate(File):
 	worldFile = open(File, 'r')
 	worldMatrix = []
@@ -30,70 +29,20 @@ def generate(File):
 
 # Node class that represent a square in a given world
 class Node:
-	def __init__(self, x = 0, y = 0, t = 0, d = 0, h = 0, F = 0, p = None):
-		self.location = [x, y]
-		self.topVal = t
-		self.distanceToStart = d
-		self.heuristic = h
-		self.f = F
-		self.parent = p
+	def __init__(self, location, value):
+		self.location = location
+		self.value = value
 	
 	# GETTERS
 	def getLocation(self):
 		return self.location
 	
-	def getTV(self):
-		return self.topVal
-	
-	def getDistance(self):
-		return self.distanceToStart
-	
-	def getH(self):
-		return self.heuristic
-	
-	def getF(self):
-		return self.f
-	
-	def getParent(self):
-		return self.parent
+	def getValue(self):
+		return self.value
 	
 	# SETTERS
-	def setLocation(self, x, y):
-		self.location = [x, y]
+	def setLocation(self, loc):
+		self.location = loc
 	
-	def setTV(self, t):
-		if t in range(0, 3):
-			self.topVal = t
-	
-	def setDistance(self, d):
-		self.distanceToStart = d
-	
-	def setH(self, h):
-		self.heuristic = h
-	
-	def setF(self, F):
-		self.f = F
-	
-	def setParent(self, p):
-		self.parent = p
-
-# Converts a 2D list into a graph
-class Graph:
-	def __init__(self, matrix):
-		self.world = matrix
-		self.numRow = len(matrix)
-		self.numCol = len(matrix[0])
-		for y in range(0, self.numRow):
-			for x in range(0, self.numCol):
-				#h = 10 * ((numCol - 1 - x) + (y))
-				self.world[y][x] = Node(y, x, matrix[y][x])
-	
-	# GETTERS
-	def getCoord(self, x, y):
-		return self.world[x][y]
-	
-	def getNumRow(self):
-		return self.numRow
-	
-	def getNumCol(self):
-		return self.numCol
+	def setValue(self, val):
+		self.value = val

@@ -1,18 +1,12 @@
 # Artur Meletyan
-# 9/18/15
-# CSCI 3202 Assignment 3
+# 10/4/15
+# CSCI 3202 Assignment 4
 #
 # This program reads in a text file to create a graph then uses A*
 # search to find the fastest route between one node and another on
 # that graph.
 
 # Function that reads in a text file and converts it into a 2D list
-
-# variables for aStar1 and aStar2
-travAble1 = []
-travAble2 = []
-nonTravAble1 = []
-nonTravAble2 = []
 
 def generate(File):
 	worldFile = open(File, 'r')
@@ -103,88 +97,3 @@ class Graph:
 	
 	def getNumCol(self):
 		return self.numCol
-
-# First A* search algorithm
-def aStar1(graph, startNode, endNode):
-		
-	# Obtain dimensions of the graph
-	numRow = graph.getNumRow()
-	numCol = graph.getNumCol()
-	
-	# Set start and end nodes
-	start = startNode
-	end = endNode
-	
-	# Initialize traversable and nontraversable nodes list
-	travAble1.append(start)
-	
-	# Set cursor
-	c = start.getLocation();
-	
-	# Add adjacent nodes to travAble and set their cost variables
-	if((c[1]+1 < numCol)and(graph.getCoord(c[0],c[1]+1) not in travAble1)and(graph.getCoord(c[0],c[1]+1) not in nonTravAble1)and(graph.getCoord(c[0],c[1]+1).getTV != 2)):
-		travAble1.append(graph.getCoord(c[0],c[1]+1))
-		graph.getCoord(c[0],c[1]+1).setParent(graph.getCoord(c[0],c[1]))
-		graph.getCoord(c[0],c[1]+1).setDistance(10+graph.getCoord(c[0],c[1]).getDistance())
-		graph.getCoord(c[0],c[1]+1).setH(10*(c[0]+(numRow-c[1])))
-		graph.getCoord(c[0],c[1]+1).setF(graph.getCoord(c[0],c[1]+1).getDistance() + graph.getCoord(c[0],c[1]+1).getH())
-		
-	if((c[0]-1 > 0)and(c[1]+1 < numCol)and(graph.getCoord(c[0]-1,c[1]+1) not in travAble1)and(graph.getCoord(c[0]-1,c[1]+1) not in nonTravAble1)and(graph.getCoord(c[0]-1,c[1]+1).getTV() != 2)):
-		travAble1.append(graph.getCoord(c[0]-1,c[1]+1))
-		graph.getCoord(c[0]-1,c[1]+1).setParent(graph.getCoord(c[0],c[1]))
-		graph.getCoord(c[0]-1,c[1]+1).setDistance(14+graph.getCoord(c[0],c[1]).getDistance())
-		graph.getCoord(c[0]-1,c[1]+1).setH(10*((c[0]-1)+(numRow-c[1])))
-		graph.getCoord(c[0]-1,c[1]+1).setF(graph.getCoord(c[0]-1,c[1]+1).getDistance() + graph.getCoord(c[0]-1,c[1]+1).getH())
-		
-	if((c[0]-1 > 0)and(graph.getCoord(c[0]-1,c[1]) not in travAble1)and(graph.getCoord(c[0]-1,c[1]) not in nonTravAble1)and(graph.getCoord(c[0]-1,c[1]).getTV != 2)):
-		travAble1.append(graph.getCoord(c[0]-1,c[1]))
-		graph.getCoord(c[0]-1,c[1]).setParent(graph.getCoord(c[0],c[1]))
-		graph.getCoord(c[0]-1,c[1]).setDistance(10+graph.getCoord(c[0],c[1]).getDistance())
-		graph.getCoord(c[0]-1,c[1]).setH(10*((c[0]-1)+(numRow-c[1]-1)))
-		graph.getCoord(c[0]-1,c[1]).setF(graph.getCoord(c[0]-1,c[1]).getDistance() + graph.getCoord(c[0]-1,c[1]).getH())
-	
-	if((c[0]-1 > 0)and(c[1]-1 > 0)and(graph.getCoord(c[0]-1,c[1]-1) not in travAble1)and(graph.getCoord(c[0]-1,c[1]-1) not in nonTravAble1)and(graph.getCoord(c[0]-1,c[1]-1).getTV() != 2)):
-		travAble1.append(graph.getCoord(c[0]-1,c[1]-1))
-		graph.getCoord(c[0]-1,c[1]-1).setParent(graph.getCoord(c[0],c[1]))
-		graph.getCoord(c[0]-1,c[1]-1).setDistance(14+graph.getCoord(c[0],c[1]).getDistance())
-		graph.getCoord(c[0]-1,c[1]-1).setH(10*((c[0]-1)+(numRow-c[1]-2)))
-		graph.getCoord(c[0]-1,c[1]-1).setF(graph.getCoord(c[0]-1,c[1]-1).getDistance() + graph.getCoord(c[0]-1,c[1]-1).getH())
-	
-	if((c[1]-1 > 0)and(graph.getCoord(c[0],c[1]-1) not in travAble1)and(graph.getCoord(c[0],c[1]-1) not in nonTravAble1)and(graph.getCoord(c[0],c[1]-1).getTV() != 2)):
-		travAble1.append(graph.getCoord(c[0],c[1]-1))
-		graph.getCoord(c[0],c[1]-1).setParent(graph.getCoord(c[0],c[1]))
-		graph.getCoord(c[0],c[1]-1).setDistance(10+graph.getCoord(c[0],c[1]).getDistance())
-		graph.getCoord(c[0],c[1]-1).setH(10*(c[0]+(numRow-c[1]-2)))
-		graph.getCoord(c[0],c[1]-1).setF(graph.getCoord(c[0],c[1]-1).getDistance() + graph.getCoord(c[0],c[1]-1).getH())
-	
-	if((c[0]+1 < numRow)and(c[1]-1 > 0)and(graph.getCoord(c[0]+1,c[1]-1) not in travAble1)and(graph.getCoord(c[0]+1,c[1]-1) not in nonTravAble1)and(graph.getCoord(c[0]+1,c[1]-1).getTV() != 2)):
-		travAble1.append(graph.getCoord(c[0]+1,c[1]-1))
-		graph.getCoord(c[0]+1,c[1]-1).setParent(graph.getCoord(c[0],c[1]))
-		graph.getCoord(c[0]+1,c[1]-1).setDistance(14+graph.getCoord(c[0],c[1]).getDistance())
-		graph.getCoord(c[0]+1,c[1]-1).setH(10*((c[0]+1)+(numRow-c[1]-2)))
-		graph.getCoord(c[0]+1,c[1]-1).setF(graph.getCoord(c[0]+1,c[1]-1).getDistance() + graph.getCoord(c[0]+1,c[1]-1).getH())
-	
-	if((c[0]+1 < numRow)and(graph.getCoord(c[0]+1,c[1]) not in travAble1)and(graph.getCoord(c[0]+1,c[1]) not in nonTravAble1)and(graph.getCoord(c[0]+1,c[1]).getTV() != 2)):
-		travAble1.append(graph.getCoord(c[0]+1,c[1]))
-		graph.getCoord(c[0]+1,c[1]).setParent(graph.getCoord(c[0],c[1]))
-		graph.getCoord(c[0]+1,c[1]).setDistance(10+graph.getCoord(c[0],c[1]).getDistance())
-		graph.getCoord(c[0]+1,c[1]).setH(10*((c[0]+1)+(numRow-c[1]-1)))
-		graph.getCoord(c[0]+1,c[1]).setF(graph.getCoord(c[0]+1,c[1]).getDistance() + graph.getCoord(c[0]+1,c[1]).getH())
-	
-	if((c[0]+1 < numRow)and(c[1]+1 < numCol)and(graph.getCoord(c[0]+1,c[1]+1) not in travAble1)and(graph.getCoord(c[0]+1,c[1]+1) not in nonTravAble1)and(graph.getCoord(c[0]+1,c[1]+1).getTV() != 2)):
-		travAble1.append(graph.getCoord(c[0]+1,c[1]+1))
-		graph.getCoord(c[0]+1,c[1]+1).setParent(graph.getCoord(c[0],c[1]))
-		graph.getCoord(c[0]+1,c[1]+1).setDistance(14+graph.getCoord(c[0],c[1]).getDistance())
-		graph.getCoord(c[0]+1,c[1]+1).setH(10*((c[0]+1)+(numRow-c[1])))
-		graph.getCoord(c[0]+1,c[1]+1).setF(graph.getCoord(c[0]+1,c[1]+1).getDistance() + graph.getCoord(c[0]+1,c[1]+1).getH())
-	
-	nonTravAble1.append(start)
-	travAble1.remove(start)
-	
-	# Recurse until end is reached
-	while(endNode not in travAble1):
-		for node in travAble1:
-			aStar1(graph, node, endNode)
-	
-	return travAble	# for testing
-

@@ -29,18 +29,30 @@ def generate(File):
 		for x in range(0, numCol):
 			if worldMatrix[y][x] == '0':
 				worldMatrix[y][x] = 0
-			if worldMatrix[y][x] == '1':
+			elif worldMatrix[y][x] == '1':
 				worldMatrix[y][x] = 1
-			if worldMatrix[y][x] == '2':
+			elif worldMatrix[y][x] == '2':
 				worldMatrix[y][x] = 2
-			if worldMatrix[y][x] == '3':
+			elif worldMatrix[y][x] == '3':
 				worldMatrix[y][x] = 3
-			if worldMatrix[y][x] == '4':
+			elif worldMatrix[y][x] == '4':
 				worldMatrix[y][x] = 4
-			if worldMatrix[y][x] == '50':
+			elif worldMatrix[y][x] == '50':
 				worldMatrix[y][x] = 50
 	
 	return worldMatrix
+
+# Function that converts a 2D list of integers into a world populated by nodes
+def makeWorld(matrix):
+	world = []
+	numRow = len(matrix)
+	for i in range(0, numRow):
+		world.append([])
+		numCol = len(matrix[i])
+		for j in range(0, numCol):
+			world[i].append(Node((j, i), matrix[i][j]))
+	
+	return world
 
 # Node class that represent a square in a given world
 class Node:
@@ -98,7 +110,17 @@ print("")
 
 # Print World1MDP.txt more presentably
 print("Better World View")
-for i in range(0,len(world)):
-	for j in range(0,len(world[i])):
+for i in range(0, len(world)):
+	for j in range(0, len(world[i])):
 		print(world[i][j]),
 	print("")
+print("")
+
+# Print values of node version of World1MDP.txt
+print("World View (Node Version)")
+nodeWorld = makeWorld(world)
+for i in range(0, len(nodeWorld)):
+	for j in range(0, len(nodeWorld[i])):
+		print(nodeWorld[i][j].getValue()),
+	print("")
+print("")

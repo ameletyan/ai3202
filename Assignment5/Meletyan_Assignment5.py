@@ -24,6 +24,12 @@ def generate(File):
 				worldMatrix[y][x] = 1
 			if worldMatrix[y][x] == '2':
 				worldMatrix[y][x] = 2
+			if worldMatrix[y][x] == '3':
+				worldMatrix[y][x] = 3
+			if worldMatrix[y][x] == '4':
+				worldMatrix[y][x] = 4
+			if worldMatrix[y][x] == '50':
+				worldMatrix[y][x] = 50
 	
 	return worldMatrix
 
@@ -46,3 +52,6 @@ class Node:
 	
 	def setValue(self, val):
 		self.value = val
+		
+# TESTING HUB
+print(generate("World1MDP.txt"))

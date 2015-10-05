@@ -2,9 +2,17 @@
 # 10/4/15
 # CSCI 3202 Assignment 4
 #
-# This program reads in a text file to create a graph then uses A*
-# search to find the fastest route between one node and another on
-# that graph.
+# This program reads in a text file to create a graph then uses
+# Markov Decision Processes to provide utility scores for possible
+# paths across the world and the locations along the path.
+#
+# Important variables:
+discount_factor = 0.9
+mountains_reward = -1.0
+snakes_reward = -2.0
+barn_reward = 1.0
+apple_reward = 50.0
+
 
 # Function that reads in a text file and converts it into a 2D list
 def generate(File):
@@ -54,4 +62,5 @@ class Node:
 		self.value = val
 		
 # TESTING HUB
+# Print World1MDP.txt as a 2D array
 print(generate("World1MDP.txt"))

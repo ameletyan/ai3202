@@ -100,8 +100,37 @@ def makeWorld(matrix):
 	
 	return world
 
-# Sets the utility of nodes in a 2D list of nodes
+# Sets the utility of a node in a 2D list of nodes and all possible moves from it
 def setUtility(world, i, j):
+	node = world[i][j]
+	value = node.getValue()
+	numRow = len(world)
+	numCol = len(world[i])
+	
+	# Check down bound
+	if((i + 1) > numRow):
+		down = 0
+	else:
+		down = world[i + 1][j].getUtility()
+	
+	# Check up bound
+	if((i - 1) < 0):
+		up = 0
+	else:
+		up = world[i - 1][j].getUtility()
+	
+	# Check right bound
+	if((j + 1) > numCol):
+		right = 0
+	else:
+		right = world[j + 1][j].getUtility()
+	
+	# Check left bound
+	if((j - 1) < 0):
+		left = 0
+	else:
+		left = world[j - 1][j].getUtility()
+	
 	return 0
 
 # Uses the value iteration algorithm for MDP
@@ -127,11 +156,11 @@ for i in range(0, len(world)):
 	print("")
 print("")
 
-# Print values of node version of World1MDP.txt
+# Print utilities of the node version of World1MDP.txt
 print("World View (Node Version)")
 nodeWorld = makeWorld(world)
 for i in range(0, len(nodeWorld)):
 	for j in range(0, len(nodeWorld[i])):
-		print(nodeWorld[i][j].getValue()),
+		print(nodeWorld[i][j].getUtility()),
 	print("")
 print("")

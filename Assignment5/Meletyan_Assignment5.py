@@ -5,7 +5,7 @@
 # This program reads in a text file to create a graph then uses
 # Markov Decision Processes to provide utility scores for possible
 # paths across the world and the locations along the path.
-#
+
 # Important variables:
 discount_factor = 0.9
 mountains_reward = -1.0
@@ -14,66 +14,26 @@ barn_reward = 1.0
 apple_reward = 50.0
 epsilon = 0.5
 
-
-# Function that reads in a text file and converts it into a 2D list
-def generate(File):
-	worldFile = open(File, 'r')
-	worldMatrix = []
-	
-	for line in worldFile:
-		worldMatrix.append(line.rstrip('\n').split())
-		
-	numRow = len(worldMatrix)
-	for y in range(0, numRow):
-		numCol = len(worldMatrix[y])
-		for x in range(0, numCol):
-			if worldMatrix[y][x] == '0':
-				worldMatrix[y][x] = 0
-			elif worldMatrix[y][x] == '1':
-				worldMatrix[y][x] = 1
-			elif worldMatrix[y][x] == '2':
-				worldMatrix[y][x] = 2
-			elif worldMatrix[y][x] == '3':
-				worldMatrix[y][x] = 3
-			elif worldMatrix[y][x] == '4':
-				worldMatrix[y][x] = 4
-			elif worldMatrix[y][x] == '50':
-				worldMatrix[y][x] = 50
-	
-	return worldMatrix
-
-# Function that converts a 2D list of integers into a world populated by nodes
-def makeWorld(matrix):
-	world = []
-	numRow = len(matrix)
-	for i in range(0, numRow):
-		world.append([])
-		numCol = len(matrix[i])
-		for j in range(0, numCol):
-			world[i].append(Node((j, i), matrix[i][j]))
-	
-	return world
-
-# Node class that represent a square in a given world
+# Node class that represents a square in a given world
 class Node:
 	def __init__(self, location, value):
 		self.location = location
 		self.value = value
 		if(value == 50):
 			self.utility = 50
-			self.reward = 50
+			self.reward = apple_reward
 		else:
 			self.utility = 0
 			if(value == 0):
 				self.reward = 0
 			if(value == 1):
-				self.reward = -1
+				self.reward = mountains_reward
 			if(value == 2):
 				self.reward = 0
 			if(value == 3):
-				self.reward = -2
+				self.reward = snakes_reward
 			if(value == 4):
-				self.reward = 1
+				self.reward = barn_reward
 	
 	# GETTERS
 	def getLocation(self):
@@ -100,9 +60,60 @@ class Node:
 	
 	def setReward(self, r):
 		self.reward = r
+
+# Reads in a text file and converts it into a 2D list
+def generate(File):
+	worldFile = open(File, 'r')
+	worldMatrix = []
+	
+	for line in worldFile:
+		worldMatrix.append(line.rstrip('\n').split())
 		
+	numRow = len(worldMatrix)
+	for y in range(0, numRow):
+		numCol = len(worldMatrix[y])
+		for x in range(0, numCol):
+			if worldMatrix[y][x] == '0':
+				worldMatrix[y][x] = 0
+			elif worldMatrix[y][x] == '1':
+				worldMatrix[y][x] = 1
+			elif worldMatrix[y][x] == '2':
+				worldMatrix[y][x] = 2
+			elif worldMatrix[y][x] == '3':
+				worldMatrix[y][x] = 3
+			elif worldMatrix[y][x] == '4':
+				worldMatrix[y][x] = 4
+			elif worldMatrix[y][x] == '50':
+				worldMatrix[y][x] = 50
+	
+	return worldMatrix
+
+# Converts a 2D list of integers into a world populated by nodes
+def makeWorld(matrix):
+	world = []
+	numRow = len(matrix)
+	for i in range(0, numRow):
+		world.append([])
+		numCol = len(matrix[i])
+		for j in range(0, numCol):
+			world[i].append(Node((j, i), matrix[i][j]))
+	
+	return world
+
+# Sets the utility of nodes in a 2D list of nodes
+def setUtility(world, i, j):
+	return 0
+
+# Uses the value iteration algorithm for MDP
+def valueIteration(world, epsilon):
+	return 0
+
+# Finds the optimal path in a given 2D list of nodes
+def findOptimalPath(world):
+	return 0
+
 # TESTING HUB
-# Print World1MDP.txt as a 2D array
+# Print World1MDP.txt as a 2D list of integers
 print("Raw World View")
 world = generate("World1MDP.txt")
 print(world)

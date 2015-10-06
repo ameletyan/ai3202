@@ -6,13 +6,19 @@
 # Markov Decision Processes to provide utility scores for possible
 # paths across the world and the locations along the path.
 
-# Important variables:
-discount_factor = 0.9
-mountains_reward = -1.0
-snakes_reward = -2.0
-barn_reward = 1.0
-apple_reward = 50.0
-epsilon = 0.5
+# Equation variables
+discount_factor = 0.9		# discount factor used for the infinite horizon model
+epsilon = 0.5				# acceptable change threshold
+
+# Reward values
+mountains_reward = -1.0		# reward value of a "mountains" square
+snakes_reward = -2.0		# reward value of a "snakes" square
+barn_reward = 1.0			# reward value of a "barn" square
+apple_reward = 50.0			# reward value of the "apple" or destination square
+
+# Movement probabilities
+success = 0.8				# chance that the intended move is the actual move
+fail = 0.1					# chance that the actual move is to the right/left of the intended move
 
 # Node class that represents a square in a given world
 class Node:
@@ -130,6 +136,18 @@ def setUtility(world, i, j):
 		left = 0
 	else:
 		left = world[j - 1][j].getUtility()
+	
+	# Produce utilities for all possible moves for the transition model
+	# 
+	# Chance to successfully move in the intended direction:	80%
+	# Chance to move to the left of the intended direction:		10%
+	# Chance to move to the right of the intended direction:	10%
+	moveUp = success * up + fail * left + fail * right
+	moveDown = success * down + fail * left + fail * right
+	moveRight = success * right + fail * up + fail * down
+	moveLeft = success * left + fail * up + fail * down
+	
+	# Find the optimal move and set its 
 	
 	return 0
 

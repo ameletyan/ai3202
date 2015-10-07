@@ -222,11 +222,13 @@ def findOptimalPath(world):
 if __name__ == "__main__":
 	# Gather user input
 	world = raw_input("Enter the file you would like to use: ")
+	print('')
 	epsilon = float(raw_input("Enter the value of epsilon you would like to use: "))
+	print('')
 	
 	# Commence valueIteration() and find the optimal path
+	print("OPTIMAL PATH (including locations and utilities):")
 	print('')
-	print("OPTIMAL PATH (including locations and utilities)")
 	world = makeWorld(generate(world))
 	valueIteration(world, epsilon)
 	findOptimalPath(world)
@@ -234,7 +236,9 @@ if __name__ == "__main__":
 	# Print the world
 	print('')
 	print("WORLD (utility of each space):")
+	print('')
 	print("Note that these values do not change with epsilon.")
+	print('')
 	numRow = len(world)
 	numCol = len(world[0])
 	for i in range(0, numRow):
@@ -247,7 +251,9 @@ if __name__ == "__main__":
 	# Print the world
 	print('')
 	print("WORLD (optimal move from each space):")
+	print('')
 	print("Note that these values change with epsilon.")
+	print('')
 	numRow = len(world)
 	numCol = len(world[0])
 	for i in range(0, numRow):

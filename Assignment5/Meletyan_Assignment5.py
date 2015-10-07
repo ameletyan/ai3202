@@ -118,7 +118,7 @@ def makeWorld(matrix):
 # Sets the utility of a node in a 2D list of nodes and all possible moves from it
 def setNodeUtility(world, i, j):
 	node = world[i][j]
-	value = node.getValue()
+	utilityOld = node.getUtility()
 	numRow = len(world)
 	numCol = len(world[i])
 	
@@ -166,6 +166,7 @@ def setNodeUtility(world, i, j):
 		
 		# Set the current node's utility according to its reward, position, and optimal move's reward
 		node.setUtility(node.getReward() + discount_factor * moveOptimal)
+		utilityNew = node.getUtility()
 		
 		# Set the current node's optimal move to the determined one
 		if(moveOptimal == moveUp):
@@ -177,9 +178,9 @@ def setNodeUtility(world, i, j):
 		elif(moveOptimal == moveLeft):
 			node.setOptimalMove('L')
 		
-		return node.getUtility()
+		return abs(utilityOld - utilityNew)
 
-# Uses the value iteration algorithm for MDP
+# Uses the value iteration algorithm for MDP to set optimal moves
 def valueIteration(world, epsilon):
 	return 0
 

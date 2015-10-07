@@ -28,14 +28,17 @@ class Node:
 		if(value == 50):
 			self.utility = 50
 			self.reward = apple_reward
+			self.moveOptimal = 'F'	# "Finish"
 		else:
 			self.utility = 0
+			self.moveOptimal = ''
 			if(value == 0):
 				self.reward = 0
 			if(value == 1):
 				self.reward = mountains_reward
 			if(value == 2):
 				self.reward = 0
+				self.moveOptimal = 'W'	# "Wall"
 			if(value == 3):
 				self.reward = snakes_reward
 			if(value == 4):
@@ -53,6 +56,9 @@ class Node:
 	
 	def getReward(self):
 		return self.reward
+		
+	def getOptimalMove(self):
+		return self.moveOptimal
 	
 	# SETTERS
 	def setLocation(self, l):
@@ -66,6 +72,9 @@ class Node:
 	
 	def setReward(self, r):
 		self.reward = r
+	
+	def setOptimalMove(self, o):
+		self.moveOptimal = o
 
 # Reads in a text file and converts it into a 2D list
 def generate(File):
@@ -184,6 +193,6 @@ nodeWorld = makeWorld(world)
 for i in range(0, len(nodeWorld)):
 	for j in range(0, len(nodeWorld[i])):
 		setUtility(nodeWorld, i, j)
-		print(nodeWorld[i][j].getUtility()),
+		print("%.1f" % round(nodeWorld[i][j].getUtility(),1)),
 	print("")
 print("")

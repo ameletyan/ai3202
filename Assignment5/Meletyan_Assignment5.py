@@ -221,21 +221,24 @@ def findOptimalPath(world):
 
 if __name__ == "__main__":
 	# Gather user input
-	#world = raw_input("Enter the file you would like to use: ")
-	#epsilon = float(raw_input("Enter the value of epsilon you would like to use: "))
-	world = "World1MDP.txt"
-	
-	# Create and print the world
-	world = makeWorld(generate(world))
-	numRow = len(world)
-	numCol = len(world[0])
-	
-	for i in range(0, numRow):
-		for j in range(0, numCol):
-			print(world[i][j].getValue()),
-			print(''),
-		print('')
+	world = raw_input("Enter the file you would like to use: ")
+	epsilon = float(raw_input("Enter the value of epsilon you would like to use: "))
 	
 	# Commence valueIteration() and find the optimal path
+	print('')
+	print("OPTIMAL PATH (including locations and utilities)")
+	world = makeWorld(generate(world))
 	valueIteration(world, epsilon)
 	findOptimalPath(world)
+	
+	# Print the world
+	print('')
+	print("WORLD (utility of each space):")
+	numRow = len(world)
+	numCol = len(world[0])
+	for i in range(0, numRow):
+		for j in range(0, numCol):
+			print("%.1f"%round(world[i][j].getUtility(), 1)),
+			print('\t'),
+			print(''),
+		print('')

@@ -122,47 +122,62 @@ def setUtility(world, i, j):
 	numRow = len(world)
 	numCol = len(world[i])
 	
-	# Check down bound
-	if((i + 1) >= numRow):
-		down = 0
+	# Check if wall or finish
+	if((node.getOptimalMove() == 'W')or(node.getOptimalMove() == 'F')):
+		return None
+	
 	else:
-		down = world[i + 1][j].getUtility()
-	
-	# Check up bound
-	if((i - 1) < 0):
-		up = 0
-	else:
-		up = world[i - 1][j].getUtility()
-	
-	# Check right bound
-	if((j + 1) >= numCol):
-		right = 0
-	else:
-		right = world[i][j + 1].getUtility()
-	
-	# Check left bound
-	if((j - 1) < 0):
-		left = 0
-	else:
-		left = world[i][j - 1].getUtility()
-	
-	# Produce utilities for all possible moves for the transition model
-	# 
-	# Chance to successfully move in the intended direction:	80%
-	# Chance to move to the left of the intended direction:		10%
-	# Chance to move to the right of the intended direction:	10%
-	moveUp = success * up + fail * left + fail * right
-	moveDown = success * down + fail * left + fail * right
-	moveRight = success * right + fail * up + fail * down
-	moveLeft = success * left + fail * up + fail * down
-	
-	# Find the optimal move
-	moveOptimal = max(moveUp, moveDown, moveRight, moveLeft)
-	
-	# Set the current node's utility according to its reward, position, and optimal move's reward
-	node.setUtility(node.getReward() + discount_factor * moveOptimal)
-	
-	return 0
+		# Check down bound
+		if((i + 1) >= numRow):
+			down = 0
+		else:
+			down = world[i + 1][j].getUtility()
+		
+		# Check up bound
+		if((i - 1) < 0):
+			up = 0
+		else:
+			up = world[i - 1][j].getUtility()
+			
+		# Check right bound
+		if((j + 1) >= numCol):
+			right = 0
+		else:
+			right = world[i][j + 1].getUtility()
+			
+		# Check left bound
+		if((j - 1) < 0):
+			left = 0
+		else:
+			left = world[i][j - 1].getUtility()
+		
+		# Produce utilities for all possible moves for the transition model
+		# 
+		# Chance to successfully move in the intended direction:	80%
+		# Chance to move to the left of the intended direction:		10%
+		# Chance to move to the right of the intended direction:	10%
+		moveUp = success * up + fail * left + fail * right
+		moveDown = success * down + fail * left + fail * right
+		moveRight = success * right + fail * up + fail * down
+		moveLeft = success * left + fail * up + fail * down
+		
+		# Find the optimal move
+		moveOptimal = max(moveUp, moveDown, moveRight, moveLeft)
+		
+		# Set the current node's utility according to its reward, position, and optimal move's reward
+		node.setUtility(node.getReward() + discount_factor * moveOptimal)
+		
+		# Set the current node's optimal move to the determined one
+		if(moveOptimal == moveUp):
+			node.setOptimalMove('U')
+		elif(moveOptimal == moveRight):
+			node.setOptimalMove('R')
+		elif(moveOptimal == moveDown):
+			node.setOptimalMove('D')
+		elif(moveOptimal == moveLeft):
+			node.setOptimalMove('L')
+		
+		return node.getUtility()
 
 # Uses the value iteration algorithm for MDP
 def valueIteration(world, epsilon):

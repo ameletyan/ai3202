@@ -182,7 +182,7 @@ def setNodeUtility(world, i, j):
 
 # Uses the value iteration algorithm for MDP to set optimal moves for world
 def valueIteration(world, epsilon):
-	delta = epsilon + 1
+	delta = 1 + (epsilon * (1-discount_factor)/discount_factor)
 	numRow = len(world)
 	numCol = len(world[0])
 	
@@ -219,20 +219,16 @@ valueIteration(nodeWorld, epsilon)
 
 # Print utilities of the node version of World1MDP.txt
 print("World View (Node Version)")
-nodeWorld = makeWorld(world)
 for i in range(0, len(nodeWorld)):
 	for j in range(0, len(nodeWorld[i])):
-		#setNodeUtility(nodeWorld, i, j)
 		print("%.1f" % round(nodeWorld[i][j].getUtility(),1)),
 	print("")
 print("")
 
 # Print optimal moves of the node version of World1MDP.txt
 print("World View (Node Version)")
-nodeWorld = makeWorld(world)
 for i in range(0, len(nodeWorld)):
 	for j in range(0, len(nodeWorld[i])):
-		#setNodeUtility(nodeWorld, i, j)
 		print(nodeWorld[i][j].getOptimalMove()),
 	print("")
 print("")

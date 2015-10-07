@@ -1,12 +1,4 @@
 _**Artur Meletyan**_ | _**10/7/15**_ | _**CSCI 3202**_ | _**Assignment 5**_
 -
 As I changed the value of epsilon (the values I used besides the default value of 0.5 were 0.1, 0.9, 1, 10, 20, 50, 100), the
-optimal path stayed the same, but the program stopped finding it once I used the inputs of 20, 50, and 100.  For the last inputs, 
-the movement directions on the resulting world's locations were changed and consequently the resulting path became different than 
-the optimal path.  The movement directions changed because higher values of epsilon led to lower values of delta.  Since the 
-delta becomes smaller, the program interprets that more iterations would not find the solution and determines the path with fewer 
-iterations than necessary to find the true optimal path.  The affect of inaccurate epsilon values can be seen most saliently with 
-very large values (hence, very large inaccuracies), like 1000.  Setting epsilon equal to 1000 will force the program to traverse 
-the graph infinitely because it cannot find the finish due to how inaccurate the algorithm has become.  Thus, while the optimal 
-path does not change with different values of epsilon, the resulting path does change as the epsilon value gets higher (around 20 
-and above) because the delta value becomes smaller and forces the algorithm to become less accurate.
+solution path stayed largely the same until I used the inputs of 20, 50, and 100.  For the last inputs, the movement directions on the resulting world's locations were changed and consequently the resulting path became different than the optimal path (the initial solution path).  The movement directions changed because higher values of epsilon led to lower values of delta.  Since the delta becomes smaller, the program interprets that more iterations would not find the solution and determines the path with fewer iterations than necessary to find the true optimal path.  The affect of inaccurate epsilon values can be seen most saliently with very large values (hence, very large inaccuracies), like 1000.  Setting epsilon equal to 1000 will force the program to traverse the graph infinitely because it cannot find the finish due to how inaccurate the algorithm has become.  Thus, the solution path does change as the epsilon value gets higher (around 20 and above) because the delta value becomes smaller and forces the algorithm to become less accurate.

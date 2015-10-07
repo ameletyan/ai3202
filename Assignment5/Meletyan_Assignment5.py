@@ -199,7 +199,10 @@ def findOptimalPath(world):
 	i = len(world)-1
 	j = 0
 	cursor = world[i][j]
-	print(len(world)-i-1, j)
+	print("Location: "),
+	print(len(world)-i-1, j),
+	print("Utility: "),
+	print(world[i][j].getUtility())
 	while(cursor.getOptimalMove() != 'F'):
 		move = cursor.getOptimalMove()
 		if(move == 'D'):
@@ -211,5 +214,28 @@ def findOptimalPath(world):
 		elif(move == 'L'):
 			i -= 1
 		cursor = world[i][j]
-		print(len(world)-i-1, j)
+		print("Location: "),
+		print(len(world)-i-1, j),
+		print("Utility: "),
+		print(world[i][j].getUtility())
 
+if __name__ == "__main__":
+	# Gather user input
+	#world = raw_input("Enter the file you would like to use: ")
+	#epsilon = float(raw_input("Enter the value of epsilon you would like to use: "))
+	world = "World1MDP.txt"
+	
+	# Create and print the world
+	world = makeWorld(generate(world))
+	numRow = len(world)
+	numCol = len(world[0])
+	
+	for i in range(0, numRow):
+		for j in range(0, numCol):
+			print(world[i][j].getValue()),
+			print(''),
+		print('')
+	
+	# Commence valueIteration() and find the optimal path
+	valueIteration(world, epsilon)
+	findOptimalPath(world)

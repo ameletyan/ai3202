@@ -116,7 +116,7 @@ def makeWorld(matrix):
 	return world
 
 # Sets the utility of a node in a 2D list of nodes and all possible moves from it
-def setUtility(world, i, j):
+def setNodeUtility(world, i, j):
 	node = world[i][j]
 	value = node.getValue()
 	numRow = len(world)
@@ -207,7 +207,17 @@ print("World View (Node Version)")
 nodeWorld = makeWorld(world)
 for i in range(0, len(nodeWorld)):
 	for j in range(0, len(nodeWorld[i])):
-		setUtility(nodeWorld, i, j)
+		setNodeUtility(nodeWorld, i, j)
 		print("%.1f" % round(nodeWorld[i][j].getUtility(),1)),
+	print("")
+print("")
+
+# Print optimal moves of the node version of World1MDP.txt
+print("World View (Node Version)")
+nodeWorld = makeWorld(world)
+for i in range(0, len(nodeWorld)):
+	for j in range(0, len(nodeWorld[i])):
+		setNodeUtility(nodeWorld, i, j)
+		print(nodeWorld[i][j].getOptimalMove()),
 	print("")
 print("")

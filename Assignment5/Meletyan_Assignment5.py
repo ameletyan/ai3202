@@ -234,11 +234,25 @@ if __name__ == "__main__":
 	# Print the world
 	print('')
 	print("WORLD (utility of each space):")
+	print("Note that these values do not change with epsilon.")
 	numRow = len(world)
 	numCol = len(world[0])
 	for i in range(0, numRow):
 		for j in range(0, numCol):
 			print("%.1f"%round(world[i][j].getUtility(), 1)),
+			print('\t'),
+			print(''),
+		print('')
+	
+	# Print the world
+	print('')
+	print("WORLD (optimal move from each space):")
+	print("Note that these values change with epsilon.")
+	numRow = len(world)
+	numCol = len(world[0])
+	for i in range(0, numRow):
+		for j in range(0, numCol):
+			print(world[i][j].getOptimalMove()),
 			print('\t'),
 			print(''),
 		print('')

@@ -114,7 +114,7 @@ def setUtility(world, i, j):
 	numCol = len(world[i])
 	
 	# Check down bound
-	if((i + 1) > numRow):
+	if((i + 1) >= numRow):
 		down = 0
 	else:
 		down = world[i + 1][j].getUtility()
@@ -126,16 +126,16 @@ def setUtility(world, i, j):
 		up = world[i - 1][j].getUtility()
 	
 	# Check right bound
-	if((j + 1) > numCol):
+	if((j + 1) >= numCol):
 		right = 0
 	else:
-		right = world[j + 1][j].getUtility()
+		right = world[i][j + 1].getUtility()
 	
 	# Check left bound
 	if((j - 1) < 0):
 		left = 0
 	else:
-		left = world[j - 1][j].getUtility()
+		left = world[i][j - 1].getUtility()
 	
 	# Produce utilities for all possible moves for the transition model
 	# 

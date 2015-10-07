@@ -196,7 +196,22 @@ def valueIteration(world, epsilon):
 
 # Finds the optimal path in a given 2D list of nodes
 def findOptimalPath(world):
-	return 0
+	i = len(world)-1
+	j = 0
+	cursor = world[i][j]
+	print(len(world)-i-1, j)
+	while(cursor.getOptimalMove() != 'F'):
+		move = cursor.getOptimalMove()
+		if(move == 'D'):
+			i += 1
+		elif(move == 'U'):
+			i -= 1
+		elif(move == 'R'):
+			j += 1
+		elif(move == 'L'):
+			i -= 1
+		cursor = world[i][j]
+		print(len(world)-i-1, j)
 
 # TESTING HUB
 # Print World1MDP.txt as a 2D list of integers
@@ -232,4 +247,7 @@ for i in range(0, len(nodeWorld)):
 		print(nodeWorld[i][j].getOptimalMove()),
 	print("")
 print("")
+
+# Print optimal path
+findOptimalPath(nodeWorld)
 

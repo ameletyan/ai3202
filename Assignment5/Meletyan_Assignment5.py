@@ -147,7 +147,11 @@ def setUtility(world, i, j):
 	moveRight = success * right + fail * up + fail * down
 	moveLeft = success * left + fail * up + fail * down
 	
-	# Find the optimal move and set its 
+	# Find the optimal move
+	moveOptimal = max(moveUp, moveDown, moveRight, moveLeft)
+	
+	# Set the current node's utility according to its reward, position, and optimal move's reward
+	node.setUtility(node.getReward() + discount_factor * moveOptimal)
 	
 	return 0
 
@@ -179,6 +183,7 @@ print("World View (Node Version)")
 nodeWorld = makeWorld(world)
 for i in range(0, len(nodeWorld)):
 	for j in range(0, len(nodeWorld[i])):
+		setUtility(nodeWorld, i, j)
 		print(nodeWorld[i][j].getUtility()),
 	print("")
 print("")

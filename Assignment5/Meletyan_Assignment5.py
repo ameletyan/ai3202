@@ -191,6 +191,8 @@ def valueIteration(world, epsilon):
 		for i in range(numRow-1, -1, -1):
 			for j in range(numCol-1, -1, -1):
 				deltaTemp = setNodeUtility(world, i, j)
+				if(deltaTemp == None):
+					deltaTemp = 0
 				if(deltaTemp > delta):
 					delta = deltaTemp
 
@@ -221,9 +223,15 @@ def findOptimalPath(world):
 
 if __name__ == "__main__":
 	# Gather user input
-	world = raw_input("Enter the file you would like to use: ")
+	# Python 2
+	#world = raw_input("Enter the file you would like to use: ")
+	# Python 3
+	world = input("Enter the file you would like to use: ")
 	print('')
-	epsilon = float(raw_input("Enter the value of epsilon you would like to use: "))
+	# Python 2
+	#epsilon = float(raw_input("Enter the value of epsilon you would like to use: "))
+	# Python 3
+	epsilon = float(input("Enter the value of epsilon you would like to use: "))
 	print('')
 	
 	# Commence valueIteration() and find the optimal path

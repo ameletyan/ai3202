@@ -19,9 +19,9 @@
 #   3. C = cancer
 #   4. D = dyspnoea
 #   5. X = x-ray
-#   NOTE: lowercase letters stand for "Variable = True/Low"
+#   NOTE: lowercase letters stand for "Variable = True/Low/Positive"
 #   NOTE: using '~' before the lower case letter stands for
-#         "Variable = False/High"
+#         "Variable = False/High/Negative"
 #   NOTE: use the capital letter to return the probability
 #         distribution for the variable
 #   NOTE: for "-p", use P or S followed by the new numeric value
@@ -63,13 +63,13 @@ class Node:
 		
 	# SETTERS
 	# Set the Conditional Probability Table of a node depending on its name
-	def setCPT(self):
+	def setCPT(self, p = 0.9, s = 0.3):
 		if(self.name == "Pollution"):
-			self.cpt["P(P)"] = 0.9		# Low pollution
-			self.cpt["P(!P)"] = 0.1		# High pollution
+			self.cpt["P(P)"] = p		# Low pollution
+			self.cpt["P(!P)"] = 1-p		# High pollution
 		elif(self.name == "Smoker"):
-			self.cpt["P(S)"] = 0.3
-			self.cpt["P(!S)"] = 0.7
+			self.cpt["P(S)"] = s
+			self.cpt["P(!S)"] = 1-s
 		elif(self.name == "Cancer"):
 			self.cpt["P(C|!P,S)"] = 0.05
 			self.cpt["P(C|!P,!S)"] = 0.02
@@ -97,11 +97,11 @@ class Node:
 	
 	# ADDERS
 		
-	def addParent(self, parentName, parentNew):
-		self.parents[parentName] = parentNew
+	def addParent(self, node):
+		self.parents[node.getName()] = node
 	
-	def addChild(self, childNew):
-		self.children[childName] = childNew
+	def addChild(self, node):
+		self.children[node.getName()] = node
 
 # Bayes Net
 class BayesNet:

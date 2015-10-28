@@ -67,22 +67,22 @@ class Node:
 	# SETTERS
 	def setCPT(self, p = 0.9, s = 0.3):
 		if(self.name == "Pollution"):
-			self.cpt["P(P)"] = p		# Low pollution
-			self.cpt["P(!P)"] = 1-p		# High pollution
+			self.cpt['P'] = p		# Low pollution
 		elif(self.name == "Smoker"):
-			self.cpt["P(S)"] = s
-			self.cpt["P(!S)"] = 1-s
+			self.cpt['S'] = s
 		elif(self.name == "Cancer"):
-			self.cpt["P(C|!P,S)"] = 0.05
-			self.cpt["P(C|!P,!S)"] = 0.02
-			self.cpt["P(C|P,S)"] = 0.03
-			self.cpt["P(C|P,!S)"] = 0.001
+			self.cpt['P'] = {}
+			self.cpt['!P'] = {}
+			self.cpt['P']['S'] = 0.03
+			self.cpt['P']['!S'] = 0.001
+			self.cpt['!P']['S'] = 0.05
+			self.cpt['!P']['!S'] = 0.02
 		elif(self.name == "XRay"):
-			self.cpt["P(X|C)"] = 0.9	# X-Ray returns positive
-			self.cpt["P(X|!C)"] = 0.2
+			self.cpt['C'] = 0.9		# X-Ray returns positive
+			self.cpt['!C'] = 0.2
 		elif(self.name == "Dyspnoea"):
-			self.cpt["P(D|C)"] = 0.65
-			self.cpt["P(D|!C)"] = 0.3
+			self.cpt['C'] = 0.65
+			self.cpt['!C'] = 0.3
 		else:
 			self.cpt = {}
 	
@@ -117,37 +117,48 @@ class BayesNet:
 	def setMarginalProbabilities(self):
 		# Pollution
 		pollution = self.nodes["Pollution"]
-		pollution.setMP(pollution.getCPT()["P(P)"])
+		pollution.setMP(pollution.getCPT()['P'])
 		
 		# Smoker
 		smoker = self.nodes["Smoker"]
-		smoker.setMP(smoker.getCPT()["P(S)"])
+		smoker.setMP(smoker.getCPT()['S'])
 		
 		# Cancer
 		cancer = self.nodes["Cancer"]
 		cancerCPT = cancer.getCPT()
 		p = pollution.getMP()
 		s = smoker.getMP()
-		cancer.setMP(cancerCPT["P(C|!P,S)"]*(1-p)*s + cancerCPT["P(C|!P,!S)"]*(1-p)*(1-s) + cancerCPT["P(C|P,S)"]*p*s + cancerCPT["P(C|P,!S)"]*p*(1-s))
+		cancer.setMP(cancerCPT['!P']['S']*(1-p)*s + cancerCPT['!P']['!S']*(1-p)*(1-s) + cancerCPT['P']['S']*p*s + cancerCPT['P']['!S']*p*(1-s))
 		
 		# X-Ray
 		xray = self.nodes["XRay"]
 		xrayCPT = xray.getCPT()
 		c = cancer.getMP()
-		xray.setMP(xrayCPT["P(X|C)"]*c + xrayCPT["P(X|!C)"]*(1-c))
+		xray.setMP(xrayCPT['C']*c + xrayCPT['!C']*(1-c))
 		
 		# Dyspnoea
 		dyspnoea = self.nodes["Dyspnoea"]
 		dyspnoeaCPT = dyspnoea.getCPT()
-		dyspnoea.setMP(dyspnoeaCPT["P(D|C)"]*c + dyspnoeaCPT["P(D|!C)"]*(1-c))
+		dyspnoea.setMP(dyspnoeaCPT['C']*c + dyspnoeaCPT['!C']*(1-c))
 	
 	# Diagnostic reasoning
-	def diagnostic(self):
-		return 0
+	def diagnostic(self, node, given):
+		probability = 0
+		if((given in node.getParents().values())or(given in node.getParents().values().getParents().values())):
+			print("Not diagnostic case")
+		else:
+			probability = 1
+		return probability
 	
 	# Predictive reasoning
-	def predictive(self):
-		return 0
+	# "node" and "given" are letters associated with a node
+	def predictive(self, node, given):
+		probability = 0
+		if((given in node.getChildren().values())or(given in node.getChildren().values().getChildren().values())):
+			print("Not predictive case")
+		else:
+			probability = 1
+		return probability
 	
 	# Intercausal reasoning
 	def intercausal(self):

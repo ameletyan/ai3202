@@ -38,10 +38,10 @@
 # - stores conditional probabilities for each node given its parents
 # - possibly use a dictionary or previous implementation
 class Node:
-	def __init__(self, name, probability = 0, presence = True):
+	def __init__(self, name, presence = True):
 		self.name = name
-		self.probability = probability
 		self.presence = presence
+		self.cpt = {}
 		self.parents = {}
 		self.children = {}
 	
@@ -49,11 +49,11 @@ class Node:
 	def getName(self):
 		return self.name
 		
-	def getProbability(self):
-		return self.probability
-		
 	def getPresence(self):
 		return self.presence
+		
+	def getCPT(self):
+		return self.cpt
 	
 	def getParents(self):
 		return self.parents
@@ -62,13 +62,41 @@ class Node:
 		return self.children
 		
 	# SETTERS
-	def setProbability(self, probabilityNew):
-		self.probability = probabilityNew
-		
+	# Set the Conditional Probability Table of a node depending on its name
+	def setCPT(self):
+		if(self.name == "Pollution"):
+			self.cpt["P(P)"] = 0.9		# Low pollution
+			self.cpt["P(!P)"] = 0.1		# High pollution
+		elif(self.name == "Smoker"):
+			self.cpt["P(S)"] = 0.3
+			self.cpt["P(!S)"] = 0.7
+		elif(self.name == "Cancer"):
+			self.cpt["P(C|!P,S)"] = 0.05
+			self.cpt["P(C|!P,!S)"] = 0.02
+			self.cpt["P(C|P,S)"] = 0.03
+			self.cpt["P(C|P,!S)"] = 0.001
+			self.cpt["P(!C|!P,S)"] = 0.95
+			self.cpt["P(!C|!P,!S)"] = 0.98
+			self.cpt["P(!C|P,S)"] = 0.97
+			self.cpt["P(!C|P,!S)"] = 0.999
+		elif(self.name == "XRay"):
+			self.cpt["P(X|C)"] = 0.9	# X-Ray returns positive
+			self.cpt["P(X|!C)"] = 0.2
+			self.cpt["P(!X|C)"] = 0.1	# X-Ray returns negative
+			self.cpt["P(!X|!C)"] = 0.8
+		elif(self.name == "Dyspnoea"):
+			self.cpt["P(D|C)"] = 0.65
+			self.cpt["P(D|!C)"] = 0.3
+			self.cpt["P(!D|C)"] = 0.35
+			self.cpt["P(!D|!C)"] = 0.7
+		else:
+			self.cpt = {}
+	
 	def setPresence(self, presenceNew):
 		self.presence = presenceNew
 	
 	# ADDERS
+		
 	def addParent(self, parentName, parentNew):
 		self.parents[parentName] = parentNew
 	
@@ -85,17 +113,8 @@ class BayesNet:
 		return self.nodes
 	
 	# ADDERS
-	def addNode(self, nodeName, nodeNew):
-		self.nodes[nodeName] = nodeNew
+	def addNode(self, node):
+		self.nodes[node.getName] = node
 
 if __name__ == "__main__":
-	pollution = Node("Pollution")
-	#print(pollution.getName())
-	smoker = Node("Smoker")
-	#print(smoker.getName())
-	cancer = Node("Cancer")
-	#print(cancer.getName())
-	xray = Node("XRay")
-	#print(xray.getName())
-	dyspnoea = Node("Dyspnoea")
-	#print(dyspnoea.getName())
+	print(0)

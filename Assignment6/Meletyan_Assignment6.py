@@ -44,7 +44,6 @@ class Node:
 		self.parents = {}
 		self.children = {}
 		self.mp = 0			# marginal probability
-		self.mpc = False	# determines whether mp has been calculated
 	
 	# GETTERS
 	def getName(self):
@@ -78,20 +77,12 @@ class Node:
 			self.cpt["P(C|!P,!S)"] = 0.02
 			self.cpt["P(C|P,S)"] = 0.03
 			self.cpt["P(C|P,!S)"] = 0.001
-			self.cpt["P(!C|!P,S)"] = 0.95
-			self.cpt["P(!C|!P,!S)"] = 0.98
-			self.cpt["P(!C|P,S)"] = 0.97
-			self.cpt["P(!C|P,!S)"] = 0.999
 		elif(self.name == "XRay"):
 			self.cpt["P(X|C)"] = 0.9	# X-Ray returns positive
 			self.cpt["P(X|!C)"] = 0.2
-			self.cpt["P(!X|C)"] = 0.1	# X-Ray returns negative
-			self.cpt["P(!X|!C)"] = 0.8
 		elif(self.name == "Dyspnoea"):
 			self.cpt["P(D|C)"] = 0.65
 			self.cpt["P(D|!C)"] = 0.3
-			self.cpt["P(!D|C)"] = 0.35
-			self.cpt["P(!D|!C)"] = 0.7
 		else:
 			self.cpt = {}
 	
@@ -120,18 +111,36 @@ class BayesNet:
 	
 	# ADDERS
 	def addNode(self, node):
-		self.nodes[node.getName] = node
+		self.nodes[node.getName()] = node
 	
 	# OTHER
 	def setMarginalProbabilities(self):
-		for node in self.nodes.values():
-			if node.mpc == False:
-				if(node.getName() == "Pollution"):
-					node.setMP(node.getCPT()["P(P)"])
-					node.setMPC(True)
-				elif(node.getName() == "Smoker"):
-					node.setMP(node.getCPT()["P(S)"])
-					node.setMPC(True)
+		# Pollution
+		pollution = self.nodes["Pollution"]
+		pollution.setMP(pollution.getCPT()["P(P)"])
+		
+		# Smoker
+		smoker = self.nodes["Smoker"]
+		smoker.setMP(smoker.getCPT()["P(S)"])
+		
+		# Cancer
+		cancer = self.nodes["Cancer"]
+		cancerCPT = cancer.getCPT()
+		p = pollution.getMP()
+		s = smoker.getMP()
+		cancer.setMP(cancerCPT["P(C|!P,S)"]*(1-p)*s + cancerCPT["P(C|!P,!S)"]*(1-p)*(1-s) + cancerCPT["P(C|P,S)"]*p*s + cancerCPT["P(C|P,!S)"]*p*(1-s))
+		
+		# X-Ray
+		xray = self.nodes["XRay"]
+		xrayCPT = xray.getCPT()
+		c = cancer.getMP()
+		xray.setMP(xrayCPT["P(X|C)"]*c + xrayCPT["P(X|!C)"]*(1-c))
+		
+		# Dyspnoea
+		dyspnoea = self.nodes["Dyspnoea"]
+		dyspnoeaCPT = dyspnoea.getCPT()
+		dyspnoea.setMP(dyspnoeaCPT["P(D|C)"]*c + dyspnoeaCPT["P(D|!C)"]*(1-c))
+					
 
 if __name__ == "__main__":
 	print(0)

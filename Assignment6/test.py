@@ -17,6 +17,7 @@ smoker = Node("Smoker")
 print("Printing name...   \n\t"),
 print(smoker.getName())
 smoker.setCPT()
+#smoker.setCPT(0.9, 0.5)
 print("Printing CPT...   \n\t"),
 print(smoker.getCPT())
 print("")
@@ -134,4 +135,9 @@ print("P(X|C,S): ", bn.intercausal(xray, cancer, smoker))
 print("P(D|C,S): ", bn.intercausal(dyspnoea, cancer, smoker))
 
 # Combined Reasoning
-
+print("\nCombined Reasoning")
+print("P(!P|D,S): ", bn.combined(pollution, dyspnoea, smoker, True))
+print("P(S|D,S): ", bn.combined(smoker, dyspnoea, smoker))
+print("P(C|D,S): ", bn.combined(cancer, dyspnoea, smoker))
+print("P(X|D,S): ", bn.combined(xray, dyspnoea, smoker))
+print("P(D|D,S): ", bn.combined(dyspnoea, dyspnoea, smoker))

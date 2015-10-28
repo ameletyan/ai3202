@@ -107,6 +107,7 @@ print("All relations and marginal probabilities processed\n")
 # Predictive Reasoning
 print("Predictive Reasoning")
 print("P(C|S): ", bn.predictive(cancer, smoker))
+print("P(C|!S): ", bn.predictive(cancer, smoker, False, True))
 
 
 # Intercausal Reasoning

@@ -134,6 +134,66 @@ class BayesNet:
 		dyspnoea.setMP(dyspnoeaCPT['C']*c + dyspnoeaCPT['!C']*(1-c))
 	
 	# NOTE: P(A|B) = P(B|A)*P(A)/P(B)
+	# Predictive reasoning
+	def predictive(self, prob, given, probBang = False, givenBang = False):
+		probability = 0
+		if((given in prob.getChildren().values())or(prob == given)):
+			print("Not predictive case")
+		else:
+			enum = 0
+			denom = 0
+			parentMP1 = 1
+			parentMP2 = 1
+			cptKey = ''
+			
+			for parent in prob.getParents().values():
+				if(parent == given):
+					cptKey = parent.getName()[0]
+				if(parentMP1 == 1):
+					parentMP1 = parent.getMP()
+				else:
+					parentMP2 = parent.getMP()
+					
+			for key in prob.getCPT().keys():
+				enumTemp = 0
+				denomTemp = 0
+				if(('!' + cptKey) in key):
+					if(givenBang):
+						enumTemp += prob.getCPT()[key]
+						denomTemp += 1 - enumTemp
+						enumTemp *= 1 - parentMP1
+						denomTemp *= 1 - parentMP1
+						if('!P' in key):
+							enumTemp *= 1 - parentMP2
+							denomTemp *= 1 - parentMP2
+						else:
+							enumTemp *= parentMP2
+							denomTemp *= parentMP2
+						enum += enumTemp
+						denom += denomTemp
+				else:
+					if(givenBang == False):
+						enumTemp += prob.getCPT()[key]
+						denomTemp += 1 - enumTemp
+						enumTemp *= parentMP1
+						denomTemp *= parentMP1
+						if('!P' in key):
+							enumTemp *= 1 - parentMP2
+							denomTemp *= 1 - parentMP2
+						else:
+							enumTemp *= parentMP2
+							denomTemp *= parentMP2
+						enum += enumTemp
+						denom += denomTemp
+			
+			denom += enum
+			if(probBang):
+				probability = 1 - (enum/denom)
+			else:
+				probability = enum/denom
+			
+		return probability
+		
 	# Diagnostic reasoning
 	def diagnostic(self, prob, given, probBang = False, givenBang = False):
 		probability = 0
@@ -141,36 +201,6 @@ class BayesNet:
 			print("Not diagnostic case")
 		else:
 			probability = 1
-		return probability
-	
-	# Predictive reasoning
-	def predictive(self, prob, given, probBang = False, givenBang = False):
-		probability = 0
-		if((given in prob.getChildren().values())or(prob == given)):
-			print("Not predictive case")
-		else:
-			denom = 0
-			enum = 0
-			cptKey = ''
-			
-			for key in prob.getParents():
-				if(prob.getParents()[key] == given):
-					cptKey = prob.getParents()[key].getName()[0]
-			for key in prob.getCPT().keys():
-				if(('!' + cptKey) in key):
-					if(givenBang):
-						enum += prob.getCPT()[key]
-				else:
-					if(givenBang == False):
-						enum += prob.getCPT()[key]
-						print(enum)
-			
-			denom = enum + (1 - enum)
-			if(probBang):
-				probability = 1 - (enum/denom)
-			else:
-				probability = enum/denom
-			
 		return probability
 	
 	# Intercausal reasoning

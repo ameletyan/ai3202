@@ -2,35 +2,22 @@
 # 10/4/15
 # CSCI 3202 Assignment 6
 #
-# REQUIREMENTS:
-# - handle queries from user joint, marginal, and conditional
-#   probablities for any variable in the network
-# - generate queries on command line using options and arguments
-#   (easiest way to do this in Python is to use the getopt module
-#   at https://docs.python.org/2/library/getopt.html)
-# - option flags need to be the following:
-#   1. "-g" for a conditional probability
-#   2. "-m" for a marginal probability
-#   3. "-p" to set a prior for either pollution or smoking
-# - following each option will be variable abbreviations to
-#   include in calculations which will be the following:
-#   1. P = pollution
-#   2. S = smoker
-#   3. C = cancer
-#   4. D = dyspnoea
-#   5. X = x-ray
-#   NOTE: lowercase letters stand for "Variable = True/Low/Positive"
-#   NOTE: using '~' before the lower case letter stands for
-#         "Variable = False/High/Negative"
-#   NOTE: use the capital letter to return the probability
-#         distribution for the variable
-#   NOTE: for "-p", use P or S followed by the new numeric value
-# - assume this program only needs to handle one calculation each
-#   time it is run UNLESS setting different priors for smoking and
-#   pollution and then also performing calculations
-# GRADING:
-# - needs to handle all calculations given in Table 2.2 of the
-#   tutorial
+# As of the final commit before the due time, I was only able to get most of
+# the code to work as assigned.  The details that I failed to implement are 
+# the following:
+#	- getting Prof. Hoenigman's "getopt" code to work, so no terminal stuff
+#	- having predictive reasoning work for nodes that are not one node apart
+#	- having diagnostic reasoning work for nodes that are not one node apart
+#	- implementing the combined reasoning function
+#	- removing smelly code (I used A LOT of conditionals)
+#
+# I think my biggest mistake was focusing too heavily on solving the math for
+# this assignment.  I spent most of the time wrapping my head around the 
+# equations, so I left myself very little time to actually code.  I assumed
+# that the coding would be simpler once I figured out the math and though
+# it was to an extent, it was not simple enough for me to finish it in the
+# time that was left.  Nonetheless, I feel confident in my ability to analyze
+# Bayesian Networks mathematically, so partial mission success!
 
 import getopt, sys
 
@@ -133,7 +120,6 @@ class BayesNet:
 		dyspnoeaCPT = dyspnoea.getCPT()
 		dyspnoea.setMP(dyspnoeaCPT['C']*c + dyspnoeaCPT['!C']*(1-c))
 	
-	# NOTE: P(A|B) = P(B|A)*P(A)/P(B)
 	# Predictive reasoning
 	def predictive(self, prob, given, probBang = False, givenBang = False):
 		probability = 0
@@ -361,11 +347,22 @@ class BayesNet:
 		probability = 0
 		if((prob == given1)or(prob == given2)):
 			probability = 1
+		else:
+			# check parameter node that is the youngest
+			# set conditional with probability of the youngest given the next youngest
+			# unroll probability from there with given information
+			# For example:
+			#	P(C|D,S) = P(C,D,S)/P(D,S) = 
+			#	(P(D|C)*P(C|P,S)*P(P)*P(S) + P(D|C)*P(C|!P,S)*P(!P)*P(S))/
+			#	(P(D|C)*P(C|P,S)*P(P)*P(S) + P(D|C)*P(C|!P,S)*P(!P)*P(S) + 
+			#	P(D|!C)*P(!C|P,S)*P(P)*P(S) + P(D|!C)*P(!C|!P,S)*P(!P)*P(S))
+			#
+			# Unfortunately, I ran out of time before I could implement this.
 		return probability
 					
 
 if __name__ == "__main__":
-	# Rhonda's code, have not gotten it to work yet
+	# Prof. Hoenigman's code, have not gotten it to work yet
 	try:
 		opts, args = getopt.getopt(sys.argv[1:], "m:g:j:p:")
 	except getopt.GetoptError as err:

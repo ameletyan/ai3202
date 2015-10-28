@@ -137,8 +137,8 @@ class BayesNet:
 	# Predictive reasoning
 	def predictive(self, prob, given, probBang = False, givenBang = False):
 		probability = 0
-		if((given in prob.getChildren().values())or(prob == given)):
-			print("Not predictive case")
+		if(prob == given):
+			probability = 1
 		else:
 			enum = 0
 			denom = 0
@@ -150,11 +150,9 @@ class BayesNet:
 			for parent in prob.getParents().values():
 				if(parent == given):
 					cptKey1 = parent.getName()[0]
-				else:
-					cptKey2 = parent.getName()[0]
-				if(parentMP1 == 1):
 					parentMP1 = parent.getMP()
 				else:
+					cptKey2 = parent.getName()[0]
 					parentMP2 = parent.getMP()
 					
 			for key in prob.getCPT().keys():
@@ -200,10 +198,9 @@ class BayesNet:
 	# Diagnostic reasoning
 	def diagnostic(self, prob, given, probBang = False, givenBang = False):
 		probability = 0
-		if((given in prob.getParents().values())or(prob == given)):
-			print("Not diagnostic case")
+		if(prob == given):
+			probability = 1
 		else:
-			
 			enum = 0
 			denom = 0
 			childMP1 = 1
@@ -214,11 +211,9 @@ class BayesNet:
 			for child in prob.getChildren().values():
 				if(child == given):
 					cptKey1 = child.getName()[0]
-				else:
-					cptKey2 = child.getName()[0]
-				if(childMP1 == 1):
 					childMP1 = child.getMP()
 				else:
+					cptKey2 = child.getName()[0]
 					childMP2 = child.getMP()
 			
 			
@@ -242,7 +237,6 @@ class BayesNet:
 				else:
 					if(givenBang == False):
 						enumTemp += prob.getCPT()[key]
-						print(enumTemp)
 						denomTemp += 1 - enumTemp
 						enumTemp *= childMP1
 						denomTemp *= childMP1
@@ -265,8 +259,28 @@ class BayesNet:
 		return probability
 	
 	# Intercausal reasoning
-	def intercausal(self):
-		return 0
+	def intercausal(self, prob, given1, given2 = None, probBang = False, givenBang1 = False, givenBang2 = False):
+		probability = 0
+		if(given2 == None):
+			if(prob == given1):
+				probability = 1
+			elif(given1 in prob.getChildren().values()):
+				probPG = self.predictive(given1, prob, givenBang1, probBang)
+				
+				if(probBang == True):
+					probPMP = 1 - prob.getMP()
+				else:
+					probPMP = prob.getMP()
+				
+				if(givenBang1 == True):
+					probGMP = 1 - given1.getMP()
+				else:
+					probGMP = given1.getMP()
+				
+				probability = probPG * probPMP / probGMP
+			elif(given1 in prob.getParents().values()):
+				probability = self.diagnostic(prob, given1, probBang, givenBang1)
+		return probability
 	
 	# Combined reasoning
 	def combined(self):

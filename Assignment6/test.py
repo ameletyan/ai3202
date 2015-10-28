@@ -103,15 +103,30 @@ print(dyspnoea.getMP())
 print("All relations and marginal probabilities processed\n")
 
 # Predictive Reasoning
-print("Predictive Reasoning")
+print("\nPredictive Reasoning")
+print("P(!P|S): ", bn.predictive(pollution, smoker, True))
+print("P(S|S): ", bn.predictive(smoker, smoker))
 print("P(C|S): ", bn.predictive(cancer, smoker))
-print("P(C|!S): ", bn.predictive(cancer, smoker, False, True))
+print("P(X|S): ", bn.predictive(xray, smoker))
+print("P(D|S): ", bn.predictive(dyspnoea, smoker))
+#print("P(C|!S): ", bn.predictive(cancer, smoker, False, True))
+#print("P(C|!P): ", bn.predictive(cancer, pollution, False, True))
 
 # Diagnostic Reasoning
 print("\nDiagnostic Reasoning")
+print("P(!P|D): ", bn.diagnostic(pollution, dyspnoea, True))
+print("P(S|D): ", bn.diagnostic(smoker, dyspnoea))
 print("P(C|D): ", bn.diagnostic(cancer, dyspnoea))
+print("P(X|D): ", bn.diagnostic(xray, dyspnoea))
+print("P(D|D): ", bn.diagnostic(dyspnoea, dyspnoea))
 
 # Intercausal Reasoning
+print("\nIntercausal Reasoning")
+print("P(!P|C): ", bn.intercausal(pollution, cancer, None, True))
+print("P(S|C): ", bn.intercausal(smoker, cancer))
+print("P(C|C): ", bn.intercausal(cancer, cancer))
+print("P(X|C): ", bn.intercausal(xray, cancer))
+print("P(D|C): ", bn.intercausal(dyspnoea, cancer))
 
 # Combined Reasoning
 

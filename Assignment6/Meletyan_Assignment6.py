@@ -144,11 +144,14 @@ class BayesNet:
 			denom = 0
 			parentMP1 = 1
 			parentMP2 = 1
-			cptKey = ''
+			cptKey1 = ''
+			cptKey2 = ''
 			
 			for parent in prob.getParents().values():
 				if(parent == given):
-					cptKey = parent.getName()[0]
+					cptKey1 = parent.getName()[0]
+				else:
+					cptKey2 = parent.getName()[0]
 				if(parentMP1 == 1):
 					parentMP1 = parent.getMP()
 				else:
@@ -157,13 +160,13 @@ class BayesNet:
 			for key in prob.getCPT().keys():
 				enumTemp = 0
 				denomTemp = 0
-				if(('!' + cptKey) in key):
+				if('!' + cptKey1 in key):
 					if(givenBang):
 						enumTemp += prob.getCPT()[key]
 						denomTemp += 1 - enumTemp
 						enumTemp *= 1 - parentMP1
 						denomTemp *= 1 - parentMP1
-						if('!P' in key):
+						if('!' + cptKey2 in key):
 							enumTemp *= 1 - parentMP2
 							denomTemp *= 1 - parentMP2
 						else:
@@ -177,7 +180,7 @@ class BayesNet:
 						denomTemp += 1 - enumTemp
 						enumTemp *= parentMP1
 						denomTemp *= parentMP1
-						if('!P' in key):
+						if('!' + cptKey2 in key):
 							enumTemp *= 1 - parentMP2
 							denomTemp *= 1 - parentMP2
 						else:
@@ -200,7 +203,65 @@ class BayesNet:
 		if((given in prob.getParents().values())or(prob == given)):
 			print("Not diagnostic case")
 		else:
-			probability = 1
+			
+			enum = 0
+			denom = 0
+			childMP1 = 1
+			childMP2 = 1
+			cptKey1 = ''
+			cptKey2 = ''
+			
+			for child in prob.getChildren().values():
+				if(child == given):
+					cptKey1 = child.getName()[0]
+				else:
+					cptKey2 = child.getName()[0]
+				if(childMP1 == 1):
+					childMP1 = child.getMP()
+				else:
+					childMP2 = child.getMP()
+			
+			
+			for key in prob.getCPT().keys():
+				enumTemp = 0
+				denomTemp = 0
+				if('!' + cptKey1 in key):
+					if(givenBang):
+						enumTemp += prob.getCPT()[key]
+						denomTemp += 1 - enumTemp
+						enumTemp *= 1 - childMP1
+						denomTemp *= 1 - childMP1
+						if('!' + cptKey2 in key):
+							enumTemp *= 1 - childMP2
+							denomTemp *= 1 - childMP2
+						else:
+							enumTemp *= childMP2
+							denomTemp *= childMP2
+						enum += enumTemp
+						denom += denomTemp
+				else:
+					if(givenBang == False):
+						enumTemp += prob.getCPT()[key]
+						print(enumTemp)
+						denomTemp += 1 - enumTemp
+						enumTemp *= childMP1
+						denomTemp *= childMP1
+						if('!' + cptKey2 in key):
+							enumTemp *= 1 - childMP2
+							denomTemp *= 1 - childMP2
+						else:
+							enumTemp *= childMP2
+							denomTemp *= childMP2
+						enum += enumTemp
+						denom += denomTemp
+			
+			denom += enum
+			if(probBang):
+				probability = 1 - (enum/denom)
+			else:
+				probability = enum/denom
+			
+			
 		return probability
 	
 	# Intercausal reasoning

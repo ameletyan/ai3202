@@ -102,13 +102,14 @@ print("Dysnoea")
 print(dyspnoea.getMP())
 print("All relations and marginal probabilities processed\n")
 
-# Diagnostic Reasoning
-
 # Predictive Reasoning
 print("Predictive Reasoning")
 print("P(C|S): ", bn.predictive(cancer, smoker))
 print("P(C|!S): ", bn.predictive(cancer, smoker, False, True))
 
+# Diagnostic Reasoning
+print("\nDiagnostic Reasoning")
+print("P(C|D): ", bn.diagnostic(cancer, dyspnoea))
 
 # Intercausal Reasoning
 

@@ -60,9 +60,6 @@ class Node:
 	
 	def getMP(self):
 		return self.mp
-	
-	def getMPC(self):
-		return self.mpc
 		
 	# SETTERS
 	def setCPT(self, p = 0.9, s = 0.3):
@@ -86,9 +83,6 @@ class Node:
 	
 	def setMP(self, mpNew):
 		self.mp = mpNew
-	
-	def setMPC(self, mpcNew):
-		self.mpc = mpcNew
 	
 	# ADDERS
 		
@@ -141,21 +135,42 @@ class BayesNet:
 	
 	# NOTE: P(A|B) = P(B|A)*P(A)/P(B)
 	# Diagnostic reasoning
-	def diagnostic(self, prob, given, probTilda = False, givenTilda = False):
+	def diagnostic(self, prob, given, probBang = False, givenBang = False):
 		probability = 0
-		if((given in node.getParents().values())or(given in node.getParents().values().getParents().values())):
+		if((given in prob.getParents().values())or(prob == given)):
 			print("Not diagnostic case")
 		else:
 			probability = 1
 		return probability
 	
 	# Predictive reasoning
-	def predictive(self, prob, given, probTilda = False, givenTilda = False):
+	def predictive(self, prob, given, probBang = False, givenBang = False):
 		probability = 0
-		if((given in node.getChildren().values())or(given in node.getChildren().values().getChildren().values())):
+		if((given in prob.getChildren().values())or(prob == given)):
 			print("Not predictive case")
 		else:
-			probability = 1
+			denom = 0
+			enum = 0
+			cptKey = ''
+			
+			for key in prob.getParents():
+				if(prob.getParents()[key] == given):
+					cptKey = prob.getParents()[key].getName()[0]
+			for key in prob.getCPT().keys():
+				if(('!' + cptKey) in key):
+					if(givenBang):
+						enum += prob.getCPT()[key]
+				else:
+					if(givenBang == False):
+						enum += prob.getCPT()[key]
+						print(enum)
+			
+			denom = enum + (1 - enum)
+			if(probBang):
+				probability = 1 - (enum/denom)
+			else:
+				probability = enum/denom
+			
 		return probability
 	
 	# Intercausal reasoning

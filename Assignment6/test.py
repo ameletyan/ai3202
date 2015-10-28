@@ -100,3 +100,16 @@ print("X-Ray")
 print(xray.getMP())
 print("Dysnoea")
 print(dyspnoea.getMP())
+print("All relations and marginal probabilities processed\n")
+
+# Diagnostic Reasoning
+
+# Predictive Reasoning
+print("Predictive Reasoning")
+print("P(C|S): ", bn.predictive(cancer, smoker))
+
+
+# Intercausal Reasoning
+
+# Combined Reasoning
+

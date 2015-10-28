@@ -32,7 +32,7 @@
 # - needs to handle all calculations given in Table 2.2 of the
 #   tutorial
 
-# VARIABLES
+import getopt, sys
 
 # NODE CLASS
 # - stores conditional probabilities for each node given its parents
@@ -140,7 +140,58 @@ class BayesNet:
 		dyspnoea = self.nodes["Dyspnoea"]
 		dyspnoeaCPT = dyspnoea.getCPT()
 		dyspnoea.setMP(dyspnoeaCPT["P(D|C)"]*c + dyspnoeaCPT["P(D|!C)"]*(1-c))
+	
+	# Diagnostic reasoning
+	def diagnostic(self):
+		return 0
+	
+	# Predictive reasoning
+	def predictive(self):
+		return 0
+	
+	# Intercausal reasoning
+	def intercausal(self):
+		return 0
+	
+	# Combined reasoning
+	def combined(self):
+		return 0
 					
 
 if __name__ == "__main__":
-	print(0)
+	# Rhonda's code, have not gotten it to work yet
+	try:
+		opts, args = getopt.getopt(sys.argv[1:], "m:g:j:p:")
+	except getopt.GetoptError as err:
+		# print help information and exit:
+		print str(err) # will print something like "option -a not recognized"
+		sys.exit(2)
+		for o, a in opts:
+			if o in ("-p"):
+				print "flag", o
+				print "args", a
+				print a[0]
+				print float(a[1:])
+				#setting the prior here works if the Bayes net is already built
+				#setPrior(a[0], float(a[1:])
+			elif o in ("-m"):
+				print "flag", o
+				print "args", a
+				print type(a)
+				#calcMarginal(a)
+			elif o in ("-g"):
+				print "flag", o
+				print "args", a
+				print type(a)
+				'''you may want to parse a here and pass the left of |
+				and right of | as arguments to calcConditional
+				'''
+				p = a.find("|")
+				print a[:p]
+				print a[p+1:]
+				#calcConditional(a[:p], a[p+1:])
+			elif o in ("-j"):
+				print "flag", o
+				print "args", a
+			else:
+				assert False, "unhandled option"

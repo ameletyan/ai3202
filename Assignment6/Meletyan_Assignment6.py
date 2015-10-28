@@ -278,8 +278,52 @@ class BayesNet:
 					probGMP = given1.getMP()
 				
 				probability = probPG * probPMP / probGMP
-			elif(given1 in prob.getParents().values()):
+			else:
 				probability = self.diagnostic(prob, given1, probBang, givenBang1)
+		else:
+			if((prob == given1)or(prob == given2)):
+				probability = 1
+			elif((given1.getChildren().values() == prob.getChildren().values())or(given2.getChildren().values() == prob.getChildren().values())):
+				if(given1.getChildren().values() == prob.getChildren().values()):
+					probability = 7
+				elif(given2.getChildren().values() == prob.getChildren().values()):
+					enum = 0
+					denom = 0
+					mp1 = given2.getMP()
+					mp2 = prob.getMP()
+					cptKey1 = given2.getName()[0]
+					cptKey2 = prob.getName()[0]
+					
+					for key in given1.getCPT().keys():
+						if(('!' + cptKey1 in key)and('!' + cptKey2 in key)):
+							if(givenBang2 and probBang):
+								enum += given1.getCPT()[key] * (1-mp1) * (1-mp2)
+							if(givenBang2 and ~probBang):
+								denom += given1.getCPT()[key] * (1-mp1) * (1-mp2)
+						elif('!' + cptKey1 in key):
+							if(givenBang2):
+								enum += given1.getCPT()[key] * (1-mp1) * mp2
+							if(givenBang2 and ~probBang):
+								denom += given1.getCPT()[key] * (1-mp1) * mp2
+						elif('!' + cptKey2 in key):
+							if(probBang):
+								enum += given1.getCPT()[key] * mp1 * (1-mp2)
+							if(givenBang2 and ~probBang):
+								denom += given1.getCPT()[key] * mp1 * (1-mp2)
+						else:
+							if((givenBang2 == False)and(probBang == False)):
+								enum += given1.getCPT()[key] * mp1 * mp2
+							if(~probBang):
+								denom += given1.getCPT()[key] * mp1 * mp2
+					
+					denom += enum
+					probability = enum/denom
+			else:
+				if(given1 in given2.getChildren().values()):
+					probability = self.diagnostic(prob, given1, probBang, givenBang1)
+				else:
+					probability = self.diagnostic(prob, given2, probBang, givenBang2)
+				
 		return probability
 	
 	# Combined reasoning

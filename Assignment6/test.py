@@ -127,6 +127,11 @@ print("P(S|C): ", bn.intercausal(smoker, cancer))
 print("P(C|C): ", bn.intercausal(cancer, cancer))
 print("P(X|C): ", bn.intercausal(xray, cancer))
 print("P(D|C): ", bn.intercausal(dyspnoea, cancer))
+print("P(!P|C,S): ", bn.intercausal(pollution, cancer, smoker, True))
+print("P(S|C,S): ", bn.intercausal(smoker, cancer, smoker))
+print("P(C|C,S): ", bn.intercausal(cancer, cancer, smoker))
+print("P(X|C,S): ", bn.intercausal(xray, cancer, smoker))
+print("P(D|C,S): ", bn.intercausal(dyspnoea, cancer, smoker))
 
 # Combined Reasoning
 

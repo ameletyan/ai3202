@@ -38,19 +38,17 @@
 # - stores conditional probabilities for each node given its parents
 # - possibly use a dictionary or previous implementation
 class Node:
-	def __init__(self, name, presence = True):
+	def __init__(self, name):
 		self.name = name
-		self.presence = presence
-		self.cpt = {}
+		self.cpt = {}		# conditional probability table
 		self.parents = {}
 		self.children = {}
+		self.mp = 0			# marginal probability
+		self.mpc = False	# determines whether mp has been calculated
 	
 	# GETTERS
 	def getName(self):
 		return self.name
-		
-	def getPresence(self):
-		return self.presence
 		
 	def getCPT(self):
 		return self.cpt
@@ -60,9 +58,14 @@ class Node:
 	
 	def getChildren(self):
 		return self.children
+	
+	def getMP(self):
+		return self.mp
+	
+	def getMPC(self):
+		return self.mpc
 		
 	# SETTERS
-	# Set the Conditional Probability Table of a node depending on its name
 	def setCPT(self, p = 0.9, s = 0.3):
 		if(self.name == "Pollution"):
 			self.cpt["P(P)"] = p		# Low pollution
@@ -92,8 +95,11 @@ class Node:
 		else:
 			self.cpt = {}
 	
-	def setPresence(self, presenceNew):
-		self.presence = presenceNew
+	def setMP(self, mpNew):
+		self.mp = mpNew
+	
+	def setMPC(self, mpcNew):
+		self.mpc = mpcNew
 	
 	# ADDERS
 		
@@ -115,6 +121,17 @@ class BayesNet:
 	# ADDERS
 	def addNode(self, node):
 		self.nodes[node.getName] = node
+	
+	# OTHER
+	def setMarginalProbabilities(self):
+		for node in self.nodes.values():
+			if node.mpc == False:
+				if(node.getName() == "Pollution"):
+					node.setMP(node.getCPT()["P(P)"])
+					node.setMPC(True)
+				elif(node.getName() == "Smoker"):
+					node.setMP(node.getCPT()["P(S)"])
+					node.setMPC(True)
 
 if __name__ == "__main__":
 	print(0)

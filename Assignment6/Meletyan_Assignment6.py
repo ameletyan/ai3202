@@ -38,22 +38,30 @@
 # - stores conditional probabilities for each node given its parents
 # - possibly use a dictionary or previous implementation
 class Node:
-	def __init__(self, cp = 0, parent = None):
+	def __init__(self, cp = 0):
 		self.cp = cp
-		self.parent = parent
+		self.parents = {}
+		self.children = {}
 	
 	# GETTERS
 	def getCP(self):
 		return self.cp
 	
 	def getParent(self):
-		return self.parent
+		return self.parents
 	
+	def getChildren(self):
+		return self.children
+		
 	# SETTERS
 	def setCP(self, cpNew):
 		self.cp = cpNew
 	
-	def setParent(self, parentNew):
-		self.parent = parentNew
+	# ADDERS
+	def addParent(self, parentName, parentNew):
+		self.parents[parentName] = parentNew
+	
+	def addChild(self, childNew):
+		self.children[childName] = childNew
 
 # GRAPH CLASS? (BAYES NET)

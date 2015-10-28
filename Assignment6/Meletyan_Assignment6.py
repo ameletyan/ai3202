@@ -38,24 +38,35 @@
 # - stores conditional probabilities for each node given its parents
 # - possibly use a dictionary or previous implementation
 class Node:
-	def __init__(self, cp = 0):
-		self.cp = cp
+	def __init__(self, name, probability = 0, presence = True):
+		self.name = name
+		self.probability = probability
+		self.presence = presence
 		self.parents = {}
 		self.children = {}
 	
 	# GETTERS
-	def getCP(self):
-		return self.cp
+	def getName(self):
+		return self.name
+		
+	def getProbability(self):
+		return self.probability
+		
+	def getPresence(self):
+		return self.presence
 	
-	def getParent(self):
+	def getParents(self):
 		return self.parents
 	
 	def getChildren(self):
 		return self.children
 		
 	# SETTERS
-	def setCP(self, cpNew):
-		self.cp = cpNew
+	def setProbability(self, probabilityNew):
+		self.probability = probabilityNew
+		
+	def setPresence(self, presenceNew):
+		self.presence = presenceNew
 	
 	# ADDERS
 	def addParent(self, parentName, parentNew):
@@ -76,3 +87,15 @@ class BayesNet:
 	# ADDERS
 	def addNode(self, nodeName, nodeNew):
 		self.nodes[nodeName] = nodeNew
+
+if __name__ == "__main__":
+	pollution = Node("Pollution")
+	#print(pollution.getName())
+	smoker = Node("Smoker")
+	#print(smoker.getName())
+	cancer = Node("Cancer")
+	#print(cancer.getName())
+	xray = Node("XRay")
+	#print(xray.getName())
+	dyspnoea = Node("Dyspnoea")
+	#print(dyspnoea.getName())

@@ -71,12 +71,10 @@ class Node:
 		elif(self.name == "Smoker"):
 			self.cpt['S'] = s
 		elif(self.name == "Cancer"):
-			self.cpt['P'] = {}
-			self.cpt['!P'] = {}
-			self.cpt['P']['S'] = 0.03
-			self.cpt['P']['!S'] = 0.001
-			self.cpt['!P']['S'] = 0.05
-			self.cpt['!P']['!S'] = 0.02
+			self.cpt['PS'] = 0.03
+			self.cpt['P!S'] = 0.001
+			self.cpt['!PS'] = 0.05
+			self.cpt['!P!S'] = 0.02
 		elif(self.name == "XRay"):
 			self.cpt['C'] = 0.9		# X-Ray returns positive
 			self.cpt['!C'] = 0.2
@@ -128,7 +126,7 @@ class BayesNet:
 		cancerCPT = cancer.getCPT()
 		p = pollution.getMP()
 		s = smoker.getMP()
-		cancer.setMP(cancerCPT['!P']['S']*(1-p)*s + cancerCPT['!P']['!S']*(1-p)*(1-s) + cancerCPT['P']['S']*p*s + cancerCPT['P']['!S']*p*(1-s))
+		cancer.setMP(cancerCPT['!PS']*(1-p)*s + cancerCPT['!P!S']*(1-p)*(1-s) + cancerCPT['PS']*p*s + cancerCPT['P!S']*p*(1-s))
 		
 		# X-Ray
 		xray = self.nodes["XRay"]
@@ -141,8 +139,9 @@ class BayesNet:
 		dyspnoeaCPT = dyspnoea.getCPT()
 		dyspnoea.setMP(dyspnoeaCPT['C']*c + dyspnoeaCPT['!C']*(1-c))
 	
+	# NOTE: P(A|B) = P(B|A)*P(A)/P(B)
 	# Diagnostic reasoning
-	def diagnostic(self, node, given):
+	def diagnostic(self, prob, given, probTilda = False, givenTilda = False):
 		probability = 0
 		if((given in node.getParents().values())or(given in node.getParents().values().getParents().values())):
 			print("Not diagnostic case")
@@ -151,8 +150,7 @@ class BayesNet:
 		return probability
 	
 	# Predictive reasoning
-	# "node" and "given" are letters associated with a node
-	def predictive(self, node, given):
+	def predictive(self, prob, given, probTilda = False, givenTilda = False):
 		probability = 0
 		if((given in node.getChildren().values())or(given in node.getChildren().values().getChildren().values())):
 			print("Not predictive case")

@@ -64,4 +64,15 @@ class Node:
 	def addChild(self, childNew):
 		self.children[childName] = childNew
 
-# GRAPH CLASS? (BAYES NET)
+# Bayes Net
+class BayesNet:
+	def __init__(self):
+		self.nodes = {}
+	
+	# GETTERS
+	def getNodes(self):
+		return self.nodes
+	
+	# ADDERS
+	def addNode(self, nodeName, nodeNew):
+		self.nodes[nodeName] = nodeNew

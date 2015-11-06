@@ -86,7 +86,7 @@ class BayesNet:
 	
 	# OTHER
 	# Takes four samples, returns list of condition Booleans
-	def analyzeSamples(self, c, s, r, w):
+	def analyzeSample(self, c, s, r, w):
 		cloudy = False
 		sprinkler = False
 		rain = False
@@ -127,6 +127,13 @@ class BayesNet:
 				wet = True
 		
 		return [cloudy, sprinkler, rain, wet]
+	
+	# Runs analyzeSample() on self.samples
+	def analyzeSelf(self):
+		results = []
+		for i in range(0, 100, 4):
+			results.append(self.analyzeSample(self.samples[i], self.samples[i+1], self.samples[i+2], self.samples[i+3]))
+		return results
 
 if __name__ == "__main__":
 	bn = BayesNet()

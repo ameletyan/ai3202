@@ -106,6 +106,8 @@ if __name__ == "__main__":
 				SCW += 1						# If yes to all, add 1
 	
 	total = len(results)
+	# Prior Sampling Results
+	print("\nPrior Sampling Results")
 	print("P(C):\t\t"),
 	print(C/total)
 	print("P(C|R):\t\t"),
@@ -114,3 +116,47 @@ if __name__ == "__main__":
 	print(SW/total)
 	print("P(S|C,W):\t"),
 	print(SCW/total)
+	
+	rejC = 0.0
+	rejc = 0.0
+	rejCR = 0.0
+	rejcr = 0.0
+	rejSW = 0.0
+	rejsw = 0.0
+	rejSCW = 0.0
+	rejscw = 0.0
+	
+	for i in range(25):
+		if(results[i][0]):							# Cloudy?
+			rejC += 1								# If yes, add 1
+		else:
+			rejc += 1								# If no, remove 1 from total
+		
+		if(results[i][2]):							# Rain?
+			if(results[i][0]):						# Cloudy?
+				rejCR += 1							# If yes to both, add 1
+		else:
+			rejcr += 1								# If not Rain, remove 1 from total
+		
+		if(results[i][3]):							# Wet?
+			if(results[i][1]):						# Sprinkler?
+				rejSW += 1							# If yes to both, add 1
+		else:
+			rejsw += 1								# If not Wet, remove 1 from total
+		
+		if(results[i][0] and results[i][3]):		# Cloudy and Wet?
+			if(results[i][1]):						# Sprinkler?
+				rejSCW += 1							# If yes to all, add 1
+		else:
+			rejscw += 1								# If not Cloudy and Wet, remove 1 from total
+	
+	# Rejection Sampling Results
+	print("\nRejection Sampling Results")
+	print("P(C):\t\t"),
+	print(rejC/(total-rejc))
+	print("P(C|R):\t\t"),
+	print(rejCR/(total-rejcr))
+	print("P(S|W):\t\t"),
+	print(rejSW/(total-rejsw))
+	print("P(S|C,W):\t"),
+	print(rejSCW/(total-rejscw))

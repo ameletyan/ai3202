@@ -3,6 +3,11 @@
 # CSCI 3202 Assignment 7
 #
 # This code is meant to analyze the samples given in the write-up.
+#
+# Sampling Legend:
+# 
+# 0	<=	u	<	0.5,	cloudy	=	true
+# 0.5	<=	u	<	1,	cloudy	=	false
 
 class BayesNet:
 	def __init__(self):
@@ -78,6 +83,50 @@ class BayesNet:
 	
 	def setWsr(self, newWsr):
 		self.Wsr = newWsr
+	
+	# OTHER
+	# Takes four samples, returns list of condition Booleans
+	def analyzeSamples(self, c, s, r, w):
+		cloudy = False
+		sprinkler = False
+		rain = False
+		wet = False
+		
+		# Analyze cloudy
+		if(c < self.C):
+			cloudy = True
+		
+		# Analyze sprinkler
+		if(cloudy):
+			if(s < self.SC):
+				sprinkler = True
+		else:
+			if(s < self.Sc):
+				sprinkler = True
+		
+		# Analyze rain
+		if(cloudy):
+			if(r < self.RC):
+				rain = True
+		else:
+			if(r < self.Rc):
+				rain = True
+		
+		# Analyze wet
+		if((sprinkler)and(rain)):
+			if(w < self.WSR):
+				wet = True
+		elif((sprinkler)and not(rain)):
+			if(w < self.WSr):
+				wet = True
+		elif(not(sprinkler)and(rain)):
+			if(w < self.WsR):
+				wet = True
+		elif(not(sprinkler)and not(rain)):
+			if(w < self.Wsr):
+				wet = True
+		
+		return [cloudy, sprinkler, rain, wet]
 
 if __name__ == "__main__":
 	bn = BayesNet()

@@ -129,8 +129,6 @@ if __name__ == "__main__":
 	for i in range(25):
 		if(results[i][0]):							# Cloudy?
 			rejC += 1								# If yes, add 1
-		else:
-			rejc += 1								# If no, remove 1 from total
 		
 		if(results[i][2]):							# Rain?
 			if(results[i][0]):						# Cloudy?
@@ -153,7 +151,7 @@ if __name__ == "__main__":
 	# Rejection Sampling Results
 	print("\nRejection Sampling Results")
 	print("P(C):\t\t"),
-	print(rejC/(total-rejc))
+	print(rejC/total)
 	print("P(C|R):\t\t"),
 	print(rejCR/(total-rejcr))
 	print("P(S|W):\t\t"),

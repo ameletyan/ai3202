@@ -22,69 +22,6 @@ class BayesNet:
 		self.WsR = 0.9		# P(W|~S,R)
 		self.Wsr = 0		# P(W|~S,~R)
 	
-	# GETTERS
-	def getSamples(self):
-		return self.samples
-	
-	def getC(self):
-		return self.C
-	
-	def getSC(self):
-		return self.SC
-	
-	def getSc(self):
-		return self.Sc
-	
-	def getRC(self):
-		return self.RC
-	
-	def getRc(self):
-		return self.Rc
-	
-	def getWSR(self):
-		return self.WSR
-	
-	def getWSr(self):
-		return self.WSr
-	
-	def getWsR(self):
-		return self.WsR
-	
-	def getWsr(self):
-		return self.Wsr
-	
-	# SETTERS
-	def setSamples(self, newSamples):
-		self.samples = newSamples
-	
-	def setC(self, newC):
-		self.C = newC
-	
-	def setSC(self, newSC):
-		self.SC = newSC
-	
-	def setSc(self, newSc):
-		self.Sc = newSc
-	
-	def setRC(self, newRC):
-		self.RC = newRC
-	
-	def setRc(self, newRc):
-		self.Rc = newRc
-	
-	def setWSR(self, newWSR):
-		self.WSR = newWSR
-	
-	def setWSr(self, newWSr):
-		self.WSr = newWSr
-	
-	def setWsR(self, newWsR):
-		self.WsR = newWsR
-	
-	def setWsr(self, newWsr):
-		self.Wsr = newWsr
-	
-	# OTHER
 	# Takes four samples, returns list of condition Booleans
 	def analyzeSample(self, c, s, r, w):
 		cloudy = False

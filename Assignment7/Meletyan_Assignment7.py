@@ -128,7 +128,7 @@ class BayesNet:
 		
 		return [cloudy, sprinkler, rain, wet]
 	
-	# Runs analyzeSample() on self.samples
+	# Runs analyzeSample() on self.samples, returns list of lists
 	def analyzeSelf(self):
 		results = []
 		for i in range(0, 100, 4):
@@ -137,4 +137,41 @@ class BayesNet:
 
 if __name__ == "__main__":
 	bn = BayesNet()
-	print(bn.getSamples())
+	results = bn.analyzeSelf()
+	
+	C = 0.0			# P(C)
+	CR = 0.0		# P(C|R)
+	SW = 0.0		# P(S|W)
+	SCW = 0.0		# P(S|C,W)
+	
+	# Legend:
+	#	results[i][0] = cloudy
+	#	results[i][1] = sprinkler
+	#	results[i][2] = rain
+	#	results[i][3] = wet
+	
+	for i in range(25):
+		if(results[i][0]):						# Cloudy?
+			C += 1								# If yes, add 1
+		
+		if(results[i][2]):						# Rain?
+			if(results[i][0]):					# Cloudy?
+				CR += 1							# If yes to both, add 1
+		
+		if(results[i][3]):						# Wet?
+			if(results[i][1]):					# Sprinkler?
+				SW += 1							# If yes to both, add 1
+		
+		if(results[i][0] and results[i][3]):	# Cloudy and Wet?
+			if(results[i][1]):					# Sprinkler?
+				SCW += 1						# If yes to all, add 1
+	
+	total = len(results)
+	print("P(C):\t\t"),
+	print(C/total)
+	print("P(C|R):\t\t"),
+	print(CR/total)
+	print("P(S|W):\t\t"),
+	print(SW/total)
+	print("P(S|C,W):\t"),
+	print(SCW/total)
